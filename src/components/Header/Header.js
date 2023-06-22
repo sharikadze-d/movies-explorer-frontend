@@ -18,8 +18,10 @@ export default function Header({ isLoggedIn }) {
 
   return (
     <header className='header'>
-      <a href='/'><img src={logo} alt='Лого' /></a>
-      {isLoggedIn ? buttonsAuthorized : buttonsUnauthorized}
+      <div className='header__wrapper'>
+        <a href='/'><img src={logo} alt='Лого' /></a>
+        {isLoggedIn ? buttonsAuthorized : buttonsUnauthorized}
+      </div>
     </header>
   );
 }

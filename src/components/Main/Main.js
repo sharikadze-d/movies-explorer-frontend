@@ -1,5 +1,7 @@
+import Promo from "../Promo/Promo";
+
 export default function Main() {
   return (
-    <h1>Router works!</h1>
+    <Promo />
   )
 }

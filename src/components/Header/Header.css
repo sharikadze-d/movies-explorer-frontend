@@ -1,6 +1,11 @@
 .header {
   background-color: #073042;
-  padding: 18px 70px;
+  padding: 18px 5.47%;
+}
+
+.header__wrapper {
+  margin: 0 auto;
+  max-width: 1140px;
   display: flex;
   justify-content: space-between;
 }
