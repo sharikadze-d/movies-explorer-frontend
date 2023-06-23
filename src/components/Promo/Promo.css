@@ -1,6 +1,6 @@
 .promo {
   background-color: #073042;
-  padding: 18px 5.47%;
+  padding: 18px 5.47% 0;
 }
 
 .promo__inner {
@@ -41,7 +41,7 @@
     align-self: auto;
     width: 99.54%;
     height: 230px;
-    margin-bottom: 50px;
+    margin-bottom: 70px;
   }
 }
 
@@ -60,5 +60,6 @@
     width: 100%;
     background-size: cover;
     background-position: center;
+    margin-bottom: 40px;
   }
 }
