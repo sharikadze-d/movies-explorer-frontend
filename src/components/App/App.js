@@ -3,6 +3,7 @@ import './App.css';
 
 import Main from '../Main/Main.js';
 import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <>
             <Header />
             <Main />
+            <Footer />
           </>
         }/>
       </Routes>
