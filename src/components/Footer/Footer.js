@@ -7,8 +7,8 @@ export default function Footer() {
       <div className="footer__inner">
         <p className="footer__link">&copy; 2023</p>
         <ul className="footer__links">
-          <li><a className="footer__link" href="https://practicum.yandex.ru/">Яндекс.Практикум</a></li>
-          <li><a className="footer__link" href="https://github.com/sharikadze-d">Github</a></li>
+          <li><a className="footer__link footer__link_list" href="https://practicum.yandex.ru/">Яндекс.Практикум</a></li>
+          <li><a className="footer__link footer__link_list" href="https://github.com/sharikadze-d">Github</a></li>
         </ul>
       </div>
     </footer>
