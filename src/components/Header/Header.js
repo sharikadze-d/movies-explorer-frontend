@@ -1,11 +1,18 @@
 import './Header.css';
 import logo from '../../images/logo.svg';
+import account from '../../images/header-account.svg';
 
 export default function Header({ isLoggedIn }) {
-  isLoggedIn = false
+  const headerLinkClassName = `header__link ${isLoggedIn ? 'header__link_hidden' : ''}`
 
   const buttonsAuthorized = (
-    <p>Заглушка</p>
+
+    <div className="header__inner">
+      <a href="/movies" className={headerLinkClassName}>Фильмы</a>
+      <a href="/saved-movies" className={headerLinkClassName}>Сохранённые фильмы</a>
+      <a href="/profile" className={headerLinkClassName}>Аккаунт <img className="header__account-logo" src={account} alt="иконка аккаунт" /></a>
+      <button className="header__burger-button" />
+    </div>
   )
 
   const buttonsUnauthorized = (
@@ -17,7 +24,7 @@ export default function Header({ isLoggedIn }) {
   )
 
   return (
-    <header className='header'>
+    <header className={isLoggedIn ? 'header header_color_grey' : 'header'}>
       <div className='header__wrapper'>
         <a href='/'><img src={logo} alt='Лого' /></a>
         {isLoggedIn ? buttonsAuthorized : buttonsUnauthorized}

@@ -5,11 +5,11 @@ import Techs from '../Techs/Techs';
 
 export default function Main() {
   return (
-    <>
+    <main>
       <Promo />
       <AboutProject />
       <Techs />
       <AboutMe />
-    </>
+    </main>
   )
 }
