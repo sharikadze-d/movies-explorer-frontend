@@ -2,7 +2,7 @@ import './Header.css';
 import logo from '../../images/logo.svg';
 import account from '../../images/header-account.svg';
 
-export default function Header({ isLoggedIn }) {
+export default function Header({ isLoggedIn, onBurgerClick }) {
   const headerLinkClassName = `header__link ${isLoggedIn ? 'header__link_hidden' : ''}`
 
   const buttonsAuthorized = (
@@ -11,7 +11,7 @@ export default function Header({ isLoggedIn }) {
       <a href="/movies" className={headerLinkClassName}>Фильмы</a>
       <a href="/saved-movies" className={headerLinkClassName}>Сохранённые фильмы</a>
       <a href="/profile" className={headerLinkClassName}>Аккаунт <img className="header__account-logo" src={account} alt="иконка аккаунт" /></a>
-      <button className="header__burger-button" />
+      <button className="header__burger-button" onClick={onBurgerClick}/>
     </div>
   )
 

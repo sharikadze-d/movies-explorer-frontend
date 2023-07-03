@@ -3,8 +3,12 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, .3);
+  justify-content: flex-end;
+  display: none;
+}
+
+.burger_opened {
   display: flex;
-  justify-content: end;
 }
 
 .burger__container {
@@ -12,7 +16,7 @@
   background-color: #202020;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .burger__close-btn {
@@ -70,4 +74,32 @@
   background-color: #313131;
   border-radius: 6px;
   margin-left: 13px;
+}
+
+@media screen and (max-width: 500px) {
+  .burger__container {
+    width: 100%;
+  }
+
+  .burger__close-btn {
+    margin-top: 21px;
+    margin-right: 18px;
+  }
+
+  .burger__link-list {
+    margin: 106px 0 42px;
+  }
+
+  .burger__list-item:not(:first-of-type) {
+    margin-top: 19px;
+  }
+
+  .burger__link {
+    padding-bottom: 6px;
+  }
+
+  .burger__link:last-of-type {
+    font-size: 14px;
+    line-height: 16px;
+  }
 }
