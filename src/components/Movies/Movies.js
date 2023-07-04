@@ -1,7 +1,11 @@
 import './Movies.css';
 
+import SearchForm from '../SearchForm/SearchForm';
+
 export default function Movies() {
   return (
-    <h1>Movies</h1>
+    <main>
+      <SearchForm />
+    </main>
   )
 }
