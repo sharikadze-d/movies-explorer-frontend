@@ -13,7 +13,9 @@ export default function MoviesCard({ movieData }) {
 
   return (
     <article className="card">
-      <img src={image} alt="Обложка" className="card__image" />
+      <div className="card__image-container">
+        <img src={image} alt="Обложка" className="card__image" />
+      </div>
       <div className="card__inner">
         <h3 className="card__name">{nameRU}</h3>
         <div className="card__like-btn"></div>

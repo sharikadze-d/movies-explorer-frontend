@@ -21,14 +21,14 @@ export default function MoviesCardList() {
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
+        {/* <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} /> */}
       </div>
       <button type="button" className="card-list__more-btn">Ещё</button>
     </section>
