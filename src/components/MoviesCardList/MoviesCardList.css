@@ -1,0 +1,28 @@
+.card-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.card-list__container {
+  margin: 80px auto 0;
+  width: 100%;
+  max-width: 1140px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 38px 20px;
+}
+
+.card-list__more-btn {
+  border: none;
+  background-color: #2f2f2f;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  width: 320px;
+  height: 36px;
+  box-sizing: border-box;
+  margin: 62px auto 99px;
+  border-radius: 6px;
+}

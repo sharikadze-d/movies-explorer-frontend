@@ -40,6 +40,7 @@ function App() {
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
             />
+            <Footer />
           </>
         }/>
       </Routes>
