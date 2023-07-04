@@ -16,12 +16,12 @@ export default function MoviesCardList() {
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
         {/* <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />

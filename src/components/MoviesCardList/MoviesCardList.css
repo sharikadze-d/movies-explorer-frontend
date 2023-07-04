@@ -40,11 +40,32 @@
 
   .card-list__container {
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 30px 30px;
     padding-top: 78px;
   }
 
   .card-list__more-btn {
     margin: 60px auto 103px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .card-list {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .card-list__container {
+    padding-top: 48px;
+    grid-template-columns: 1fr;
+    row-gap: 33px;
+  }
+
+  .card-list__more-btn {
+    width: 240px;
+  }
+
+  .card-list__more-btn {
+    margin: 58px auto 96px;
   }
 }
