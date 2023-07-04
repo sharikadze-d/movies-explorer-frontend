@@ -27,3 +27,9 @@
   font-size: 13px;
   line-height: 18px;
 }
+
+@media screen and (max-width: 500px) {
+  .filter-checkbox__label {
+    font-size: 11px;
+  }
+}
