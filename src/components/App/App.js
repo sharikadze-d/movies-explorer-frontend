@@ -8,10 +8,18 @@ import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 import SavedMovies from '../SavedMovies/SavedMovies';
+import Profile from '../Profile/Profile';
 
 function App() {
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);
 
+  // ***************************************
+  const user = {
+    name: 'Виталий',
+    email: 'pochta@yandex.ru'
+  }
+
+  // ***************************************
   function handleBurgerClick() {
     setIsBurgerOpened(true);
   }
@@ -50,12 +58,25 @@ function App() {
               isLoggedIn={true}
               onBurgerClick={handleBurgerClick}
             />
-            <SavedMovies />
             <BurgerMenu
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
             />
+            <SavedMovies />
             <Footer />
+          </>
+        }/>
+        <Route path="/profile" element={
+          <>
+            <Header
+              isLoggedIn={true}
+              onBurgerClick={handleBurgerClick}
+            />
+            <BurgerMenu
+              isOpened={isBurgerOpened}
+              onCloseClick={closeBurgerMenu}
+            />
+            <Profile userData={user} />
           </>
         }/>
       </Routes>
