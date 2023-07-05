@@ -1,6 +1,6 @@
 .about-me {
   margin: 0;
-  padding: 0 5.47% 120px;
+  padding: 0 5.47% 179px;
   display: flex;
   flex-direction: column;
 }
@@ -123,7 +123,7 @@
 
 @media screen and (max-width: 900px) {
   .about-me {
-    padding: 0 50px 90px;
+    padding: 0 50px 146px;
   }
 
   .about-me__title {
@@ -174,7 +174,7 @@
 
 @media screen and (max-width: 500px) {
   .about-me {
-    padding: 0 14px 70px;
+    padding: 0 14px 133px;
   }
 
   .about-me__info {
