@@ -4,6 +4,11 @@
   margin: 0 auto;
 }
 
+.about-project__wrapper {
+  margin: 0 auto;
+  max-width: 1140px;
+}
+
 .about-project__title {
   font-size: 22px;
   line-height: 27px;
