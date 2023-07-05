@@ -2,7 +2,7 @@ import './MoviesCardList.css';
 
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-export default function MoviesCardList() {
+export default function MoviesCardList({ isMoreButtonHidden }) {
 
   const movieData = {
     nameRU: 'Криминальное чтиво',
@@ -16,12 +16,12 @@ export default function MoviesCardList() {
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} />
         {/* <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
+        <MoviesCard movieData={movieData} /> */}
+        {/* <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} />
@@ -30,7 +30,11 @@ export default function MoviesCardList() {
         <MoviesCard movieData={movieData} />
         <MoviesCard movieData={movieData} /> */}
       </div>
-      <button type="button" className="card-list__more-btn">Ещё</button>
+      <button
+        type="button"
+        className={`card-list__more-btn ${isMoreButtonHidden ? 'card-list__more-btn_hidden' : ''}`}>
+          Ещё
+      </button>
     </section>
   )
 }

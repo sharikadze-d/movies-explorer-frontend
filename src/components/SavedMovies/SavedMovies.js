@@ -1,15 +1,15 @@
-import './Movies.css';
+import './SavedMovies.css';
 
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 
-export default function Movies() {
+export default function SavedMovies() {
   return (
     <main>
       <SearchForm />
       <Preloader />
-      <MoviesCardList isMoreButtonHidden={false}/>
+      <MoviesCardList isMoreButtonHidden={true}/>
     </main>
   )
 }

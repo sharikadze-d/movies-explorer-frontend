@@ -7,6 +7,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
+import SavedMovies from '../SavedMovies/SavedMovies';
 
 function App() {
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);
@@ -36,6 +37,20 @@ function App() {
               onBurgerClick={handleBurgerClick}
             />
             <Movies />
+            <BurgerMenu
+              isOpened={isBurgerOpened}
+              onCloseClick={closeBurgerMenu}
+            />
+            <Footer />
+          </>
+        }/>
+        <Route path="/saved-movies" element={
+          <>
+            <Header
+              isLoggedIn={true}
+              onBurgerClick={handleBurgerClick}
+            />
+            <SavedMovies />
             <BurgerMenu
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}

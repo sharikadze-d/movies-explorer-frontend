@@ -16,6 +16,7 @@
   max-width: 1140px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 36px 20px;
 }
 
@@ -32,6 +33,10 @@
   border-radius: 6px;
 }
 
+.card-list__more-btn_hidden {
+  visibility: hidden;
+}
+
 @media screen and (max-width: 900px) {
   .card-list {
     padding-left: 30px;
@@ -40,7 +45,7 @@
 
   .card-list__container {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    /* grid-template-rows: repeat(3, 1fr); */
     gap: 30px 30px;
     padding-top: 78px;
   }
@@ -67,5 +72,9 @@
 
   .card-list__more-btn {
     margin: 58px auto 96px;
+  }
+
+  .card-list__more-btn_hidden {
+    display: none;
   }
 }
