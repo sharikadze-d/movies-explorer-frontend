@@ -1,9 +1,9 @@
-import './Login.css';
+import AuthForm from '../AuthForm/AuthForm';
 
 export default function Login() {
   return (
-    <main className="login">
-      <h1>Login</h1>
+    <main className="register">
+      <AuthForm isRegister={false}/>
     </main>
   )
 }
