@@ -1,3 +1,5 @@
+import './Register.css';
+
 import AuthForm from '../AuthForm/AuthForm';
 
 export default function Register() {

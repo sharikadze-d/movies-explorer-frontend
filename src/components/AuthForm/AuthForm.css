@@ -45,6 +45,10 @@
   color:#ee3456
 }
 
+.auth-form__input:-webkit-autofill {
+  background: none;
+}
+
 .auth-form__hidden-element {
   display: none;
 }
