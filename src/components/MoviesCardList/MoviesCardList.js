@@ -1,4 +1,5 @@
 import './MoviesCardList.css';
+import '../Opacity/Opacity.css'
 
 import MoviesCard from '../MoviesCard/MoviesCard';
 
@@ -33,7 +34,7 @@ export default function MoviesCardList({ isMoreButtonHidden }) {
       <div className={`card-list__spacer ${isMoreButtonHidden ? '' : 'card-list__spacer_hidden'}`} />
       <button
         type="button"
-        className={`card-list__more-btn ${isMoreButtonHidden ? 'card-list__more-btn_hidden' : ''}`}>
+        className={`card-list__more-btn ${isMoreButtonHidden ? 'card-list__more-btn_hidden' : ''} opacity`}>
           Ещё
       </button>
     </section>

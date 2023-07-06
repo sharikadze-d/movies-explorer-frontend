@@ -1,4 +1,5 @@
 import './AuthForm.css';
+import '../Opacity/Opacity.css'
 
 import Logo from '../Logo/Logo';
 import {registerContent, loginContent } from '../../utils/constants';
@@ -27,8 +28,8 @@ export default function AuthForm({ isRegister }) {
         </div>
 
         <div className="auth-form__buttons-wrapper">
-          <button type="submit" className="auth-form__submit">{content.buttonText}</button>
-          <p className="auth-form__question">{content.question}<a href={content.linkRef} className="auth-form__link">{content.linkText}</a></p>
+          <button type="submit" className="auth-form__submit opacity">{content.buttonText}</button>
+          <p className="auth-form__question">{content.question}<a href={content.linkRef} className="auth-form__link opacity">{content.linkText}</a></p>
         </div>
       </form>
     </section>

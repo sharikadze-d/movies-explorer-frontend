@@ -1,4 +1,5 @@
 import './MoviesCard.css';
+import '../Opacity/Opacity.css'
 
 export default function MoviesCard({ movieData }) {
   const { nameRU, duration, image} = movieData;
@@ -18,7 +19,7 @@ export default function MoviesCard({ movieData }) {
       </div>
       <div className="card__inner">
         <h3 className="card__name">{nameRU}</h3>
-        <div className="card__like-btn"></div>
+        <div className="card__like-btn opacity"></div>
       </div>
       <p className="card__duration">{minToHours(duration)}</p>
     </article>
