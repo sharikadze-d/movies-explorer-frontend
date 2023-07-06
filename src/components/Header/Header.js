@@ -1,6 +1,6 @@
 import './Header.css';
-import logo from '../../images/logo.svg';
 import account from '../../images/header-account.svg';
+import Logo from '../Logo/Logo';
 
 export default function Header({ isLoggedIn, onBurgerClick }) {
   const headerLinkClassName = `header__link ${isLoggedIn ? 'header__link_hidden' : ''}`
@@ -26,7 +26,7 @@ export default function Header({ isLoggedIn, onBurgerClick }) {
   return (
     <header className={isLoggedIn ? 'header header_color_grey' : 'header'}>
       <div className='header__wrapper'>
-        <a href='/'><img src={logo} alt='Лого' /></a>
+        <Logo />
         {isLoggedIn ? buttonsAuthorized : buttonsUnauthorized}
       </div>
     </header>

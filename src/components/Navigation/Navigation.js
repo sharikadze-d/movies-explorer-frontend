@@ -1,7 +1,7 @@
-import './BurgerMenu.css';
+import './Navigation.css';
 import account from '../../images/header-account.svg';
 
-export default function BurgerMenu({ isOpened, onCloseClick }) {
+export default function Navigation({ isOpened, onCloseClick }) {
   return (
     <div className={`burger ${isOpened ? 'burger_opened' : ''}`}>
       <nav className="burger__container">
