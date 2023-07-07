@@ -30,6 +30,9 @@
 }
 
 .card__like-btn {
+  display: block;
+  border: none;
+  background: none;
   background: url('../../images/like.svg') no-repeat center / cover;
   width: 24px;
   height: 24px;

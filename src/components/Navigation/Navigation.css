@@ -5,6 +5,7 @@
   background-color: rgba(0, 0, 0, .3);
   justify-content: flex-end;
   display: none;
+  z-index: 2;
 }
 
 .burger_opened {

@@ -78,6 +78,7 @@
   border-radius: 3px;
   display: block;
   margin-bottom: 18px;
+  margin-top: 134px;
 }
 
 .auth-form__question {
@@ -132,6 +133,7 @@
   }
 
   .auth-form__submit {
+    margin-top: 222px;
     font-size: 12px;
     margin-bottom: 15px;
   }
