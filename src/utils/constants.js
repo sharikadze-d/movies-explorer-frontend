@@ -16,7 +16,15 @@ const loginContent = {
   linkRef: '/signup',
 }
 
+const mainApiConfig = {
+  baseUrl: 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json',
+  }
+}
+
 export {
   registerContent,
   loginContent,
+  mainApiConfig,
 }

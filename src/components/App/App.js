@@ -1,6 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
+
+import MainApi from '../../utils/MainApi';
+import { mainApiConfig } from '../../utils/constants';
 
 import Main from '../Main/Main.js';
 import Header from '../Header/Header';
@@ -12,14 +15,20 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
+import InfoPopup from '../InfoPopup/InfoPopup';
 
 function App() {
+  const navigate = useNavigate();
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
+  const [isRegistred, setIsRegistred] = useState(false);
+  const [errMessage, setErrMessage] = useState('');
 
   // ***************************************
   const user = {
     name: 'Виталий',
-    email: 'pochta@yandex.ru'
+    email: 'pochtaa@yandex.ru',
+    password: 'password',
   }
 
   // ***************************************
@@ -30,6 +39,29 @@ function App() {
   function closeBurgerMenu() {
     setIsBurgerOpened(false);
   }
+
+  function openInfoPopup() {
+    setIsInfoPopupOpen(true);
+  }
+
+  function closePopupInfo() {
+    setIsInfoPopupOpen(false);
+    isRegistred && navigate('/signin', {replace: true});
+  }
+
+  const mainApi = new MainApi(mainApiConfig)
+
+
+  function handleRegister(userData) {
+    mainApi.register(userData)
+      .then(() => { setIsRegistred(true) })
+      .catch((err) => {
+        setIsRegistred(false);
+        setErrMessage(err.message)
+      })
+      .finally(() => { openInfoPopup() })
+  }
+  
 
   return (
     <div className="app">
@@ -83,13 +115,20 @@ function App() {
           </>
         }/>
         <Route path="/signup" element={
-          <Register />
+          <Register onSubmit={handleRegister}/>
         }/>
         <Route path="/signin" element={
           <Login />
         }/>
         <Route path="*" element={<NotFound />}/>
+        
       </Routes>
+      <InfoPopup 
+        isRegistred={isRegistred}
+        isOpen={isInfoPopupOpen}
+        onClose={closePopupInfo}
+        errMessage={errMessage}
+      />
     </div>
   );
 }
