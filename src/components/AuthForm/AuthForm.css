@@ -42,7 +42,12 @@
 }
 
 .auth-form__input:invalid:not(:placeholder-shown) {
-  color:#ee3456
+  color:#ee3456;
+  border-color: #ee3456;
+}
+
+.auth-form__input:invalid:not(:placeholder-shown):focus {
+  border-color: #b022db;
 }
 
 .auth-form__input:-webkit-autofill {
@@ -79,6 +84,10 @@
   display: block;
   margin-bottom: 18px;
   margin-top: 134px;
+}
+
+.auth-form__submit:disabled {
+  background-color: red;
 }
 
 .auth-form__question {
