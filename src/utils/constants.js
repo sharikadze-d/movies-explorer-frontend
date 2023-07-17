@@ -23,8 +23,20 @@ const mainApiConfig = {
   }
 }
 
+const EMAIL_PATTERN = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$";
+const USERNAME_PATTERN = "^[a-zA-ZА-Яа-яёЁ \\s \\-]*$";
+
+const ERROR_MESSAGE_DEFAULT = 'Введите данные в указанном формате.'
+const ERROR_MESSAGE_USERNAME = 'Допустимые символы: латиница, кириллица, пробел, дефис'
+const ERROR_MESSAGE_EMAIL = 'Введенное значение не соответсвует формату E-mail'
+
 export {
   registerContent,
   loginContent,
   mainApiConfig,
+  EMAIL_PATTERN,
+  USERNAME_PATTERN,
+  ERROR_MESSAGE_DEFAULT,
+  ERROR_MESSAGE_USERNAME,
+  ERROR_MESSAGE_EMAIL
 }

@@ -4,7 +4,15 @@ import './AuthForm.css';
 import '../Opacity/Opacity.css'
 
 import Logo from '../Logo/Logo';
-import {registerContent, loginContent } from '../../utils/constants';
+import {
+  registerContent,
+  loginContent,
+  EMAIL_PATTERN,
+  USERNAME_PATTERN,
+  ERROR_MESSAGE_DEFAULT,
+  ERROR_MESSAGE_USERNAME,
+  ERROR_MESSAGE_EMAIL,
+} from '../../utils/constants';
 
 export default function AuthForm({ isRegister, onSubmit, errMessage }) {
   const [values, setValues] = useState({});
@@ -22,8 +30,17 @@ export default function AuthForm({ isRegister, onSubmit, errMessage }) {
     const target = evt.target;
     const name = target.name;
     const value = target.value;
-    setValues({...values, [name]: value});
-    setErrors({...errors, [name]: target.validationMessage });
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+
+    //Костыль:)
+    if (!target.validity.valid && target.validationMessage === ERROR_MESSAGE_DEFAULT && name === 'name') {
+      setErrors({ ...errors, name: ERROR_MESSAGE_USERNAME });
+    }
+    if (!target.validity.valid && target.validationMessage === ERROR_MESSAGE_DEFAULT && name === 'email') {
+      setErrors({ ...errors, email: ERROR_MESSAGE_EMAIL });
+    }
+
     setIsValid(target.closest("form").checkValidity());
   }
   
@@ -52,6 +69,8 @@ export default function AuthForm({ isRegister, onSubmit, errMessage }) {
             name="name"
             minLength="2"
             maxLength="30"
+            pattern={USERNAME_PATTERN}
+            
             disabled={isRegister ? false : true}
           />
           <span className={`auth-form__error ${errors.name ? 'auth-form__error_visible' : ''}`}>{errors.name || 'OK'}</span>
@@ -64,6 +83,7 @@ export default function AuthForm({ isRegister, onSubmit, errMessage }) {
             placeholder="Введите E-mail"
             required
             name="email"
+            pattern={EMAIL_PATTERN}
           />
           <span className={`auth-form__error ${errors.email ? 'auth-form__error_visible' : ''}`}>
             {errors.email || 'OK'}
