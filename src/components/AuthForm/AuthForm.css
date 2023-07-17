@@ -67,10 +67,21 @@
   visibility: hidden;
 }
 
+.auth-form__error_response {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 .auth-form__error_visible {
   visibility: visible;
 }
 
+.auth-form__buttons-wrapper {
+  margin-top: 120px;
+  box-sizing: border-box;
+}
 
 .auth-form__submit {
   width: 100%;
@@ -83,11 +94,10 @@
   border-radius: 3px;
   display: block;
   margin-bottom: 18px;
-  margin-top: 134px;
 }
 
 .auth-form__submit:disabled {
-  background-color: red;
+  background-color: #ccc;
 }
 
 .auth-form__question {

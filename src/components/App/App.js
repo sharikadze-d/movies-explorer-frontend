@@ -4,6 +4,7 @@ import './App.css';
 
 import MainApi from '../../utils/MainApi';
 import { mainApiConfig } from '../../utils/constants';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 import Main from '../Main/Main.js';
 import Header from '../Header/Header';
@@ -23,6 +24,7 @@ function App() {
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const [isRegistred, setIsRegistred] = useState(false);
   const [errMessage, setErrMessage] = useState('');
+  const [currentUser, setCurrentUser] = useState({})
 
   // ***************************************
   const user = {
@@ -30,8 +32,8 @@ function App() {
     email: 'pochtaa@yandex.ru',
     password: 'password',
   }
-
   // ***************************************
+  
   function handleBurgerClick() {
     setIsBurgerOpened(true);
   }
@@ -54,17 +56,27 @@ function App() {
 
   function handleRegister(userData) {
     mainApi.register(userData)
-      .then(() => { setIsRegistred(true) })
+      .then(() => { 
+        setIsRegistred(true)
+        openInfoPopup()
+       })
       .catch((err) => {
         setIsRegistred(false);
         setErrMessage(err.message)
       })
-      .finally(() => { openInfoPopup() })
+  }
+
+  function handleLogin(userData) {
+    mainApi.login(userData)
+      .then((res) => localStorage.setItem('jwt', res.jwt))
+      .then(() => navigate('/movies'))
+      .catch((err) => setErrMessage(err.message))
   }
   
 
   return (
-    <div className="app">
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="app">
       <Routes>
         <Route path="/" element={
           <>
@@ -115,10 +127,10 @@ function App() {
           </>
         }/>
         <Route path="/signup" element={
-          <Register onSubmit={handleRegister}/>
+          <Register onSubmit={handleRegister} errMessage={errMessage}/>
         }/>
         <Route path="/signin" element={
-          <Login />
+          <Login errMessage={errMessage} onSubmit={handleLogin}/>
         }/>
         <Route path="*" element={<NotFound />}/>
         
@@ -130,6 +142,7 @@ function App() {
         errMessage={errMessage}
       />
     </div>
+  </CurrentUserContext.Provider>
   );
 }
 

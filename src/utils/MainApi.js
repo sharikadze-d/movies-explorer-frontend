@@ -18,4 +18,16 @@ export default class MainApi {
     })
     .then(handleResponse)
   }
+
+  login ({ email, password }) {
+    return fetch(`${this._url}/signin`, {
+      headers: this._headers,
+      method: 'POST',
+      body: JSON.stringify({
+        password: password,
+        email: email
+      })
+    })
+    .then(handleResponse)
+  }
 }
