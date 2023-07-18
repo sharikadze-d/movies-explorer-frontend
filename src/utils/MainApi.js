@@ -30,4 +30,12 @@ export default class MainApi {
     })
     .then(handleResponse)
   }
+
+  getUserData () {
+    return fetch(`${this._url}/users/me`, {
+      headers: this._headers,
+      method: 'GET',
+    })
+    .then(handleResponse)
+  }
 }

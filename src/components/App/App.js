@@ -1,5 +1,5 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 import MainApi from '../../utils/MainApi';
@@ -24,7 +24,8 @@ function App() {
   const [isInfoPopupOpen, setIsInfoPopupOpen] = useState(false);
   const [isRegistred, setIsRegistred] = useState(false);
   const [errMessage, setErrMessage] = useState('');
-  const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // ***************************************
   const user = {
@@ -68,12 +69,30 @@ function App() {
 
   function handleLogin(userData) {
     mainApi.login(userData)
-      .then((res) => localStorage.setItem('jwt', res.jwt))
-      .then(() => navigate('/movies'))
-      .catch((err) => setErrMessage(err.message))
+      .then((res) => {
+        localStorage.setItem('jwt', res.jwt)
+        setIsLoggedIn(true);
+      })
+      .then(() => navigate('/profile'))
+      .catch((err) => {setErrMessage(err.message)})
   }
-  
 
+  function tokenCheck() {
+    const token = localStorage.getItem('jwt');
+    return !!token;
+  }
+
+  useEffect(() => {
+    if (tokenCheck()) {
+      mainApi.getUserData()
+        .then(res => setCurrentUser(res))
+        .catch((err) => {
+          setErrMessage(err.message);
+          isInfoPopupOpen(true);
+        })
+    }
+  }, [isLoggedIn])
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
@@ -123,7 +142,7 @@ function App() {
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
             />
-            <Profile userData={user} />
+            <Profile />
           </>
         }/>
         <Route path="/signup" element={
