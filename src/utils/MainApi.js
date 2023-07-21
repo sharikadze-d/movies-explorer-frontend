@@ -31,10 +31,24 @@ export default class MainApi {
     .then(handleResponse)
   }
 
-  getUserData () {
+  getUserData (token = localStorage.getItem('jwt')) {
+    return fetch(`${this._url}/users/me`, {
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${token}`},
+      method: 'GET',
+    })
+    .then(handleResponse)
+  }
+
+  updateUserData ({ name, email }) {
     return fetch(`${this._url}/users/me`, {
       headers: this._headers,
-      method: 'GET',
+      method: 'PATCH',
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
     })
     .then(handleResponse)
   }

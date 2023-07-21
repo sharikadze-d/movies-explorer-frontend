@@ -13,7 +13,7 @@ import {
   ERROR_MESSAGE_EMAIL,
 } from '../../utils/constants';
 
-export default function Profile({ onSubmit }) {
+export default function Profile({ onSubmit, errMessage, onLogout }) {
   const { name, email } = useContext(CurrentUserContext);
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
@@ -41,9 +41,6 @@ export default function Profile({ onSubmit }) {
       setErrors({ ...errors, email: ERROR_MESSAGE_EMAIL });
     }
 
-    console.log(errors)
-    // console.log()
-
     setIsValid(target.closest("form").checkValidity());
   }
   
@@ -65,7 +62,6 @@ export default function Profile({ onSubmit }) {
             maxLength="30"
             pattern={USERNAME_PATTERN}
             type="text"
-            required
           ></input>
         </div>
         <span className={`profile__error ${errors.name ? 'profile__error_visible' : ''}`}>{errors.name || 'OK'}</span>
@@ -75,15 +71,22 @@ export default function Profile({ onSubmit }) {
             className="profile__input"
             id="email"
             placeholder={email}
-            required
             type="email"
             name="email"
             pattern={EMAIL_PATTERN}
           ></input>
         </div>
         <span className={`profile__error ${errors.email ? 'profile__error_visible' : ''}`}>{errors.email || 'OK'}</span>
+        <div className={`profile__error profile__error_response ${errMessage ? 'profile__error_visible' : ''}`}>
+            {errMessage || 'OK'}
+          </div>
         <button className="profile__button opacity" type="submit" disabled={!buttonState}>Редактировать</button>
-        <button className="profile__button opacity profile__button_type_exit" type="button">Выйти из аккаунта</button>
+        <button
+          className="profile__button opacity profile__button_type_exit"
+          type="button"
+          onClick={onLogout}>
+            Выйти из аккаунта
+        </button>
       </form>
     </main>
   )

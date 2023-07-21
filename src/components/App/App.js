@@ -17,6 +17,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import InfoPopup from '../InfoPopup/InfoPopup';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
 function App() {
   const navigate = useNavigate();
@@ -26,14 +27,6 @@ function App() {
   const [errMessage, setErrMessage] = useState('');
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // ***************************************
-  const user = {
-    name: 'Виталий',
-    email: 'pochtaa@yandex.ru',
-    password: 'password',
-  }
-  // ***************************************
   
   function handleBurgerClick() {
     setIsBurgerOpened(true);
@@ -71,26 +64,47 @@ function App() {
     mainApi.login(userData)
       .then((res) => {
         localStorage.setItem('jwt', res.jwt)
-        setIsLoggedIn(true);
+        console.log(localStorage.getItem('jwt'));
+        // setIsLoggedIn(true);
+        mainApi.getUserData(res.jwt)
+          .then((res) => {
+            setIsLoggedIn(true);
+            navigate('/movies');
+          })
       })
-      .then(() => navigate('/profile'))
+      // .then(() => navigate('/movies'))
       .catch((err) => {setErrMessage(err.message)})
   }
 
   function tokenCheck() {
     const token = localStorage.getItem('jwt');
-    return !!token;
+    if (!token) {
+      return;
+    }
+    mainApi.getUserData()
+      .then(res => { 
+        if (res) {
+          setIsLoggedIn(true);
+          setCurrentUser(res);
+          navigate('/movies');
+        }
+       })
+       .catch(err => setErrMessage(err.message))
+  }
+
+  function handleUpdateProfile (userData) {
+    mainApi.updateUserData(userData)
+      .then(() => window.location.reload())
+      .catch((err) => {setErrMessage(err.message)})
+  }
+
+  function handleLogOut () {
+    setIsLoggedIn(false);
+    localStorage.removeItem('jwt');
   }
 
   useEffect(() => {
-    if (tokenCheck()) {
-      mainApi.getUserData()
-        .then(res => setCurrentUser(res))
-        .catch((err) => {
-          setErrMessage(err.message);
-          isInfoPopupOpen(true);
-        })
-    }
+    tokenCheck();
   }, [isLoggedIn])
   
   return (
@@ -107,7 +121,7 @@ function App() {
         <Route path="/movies" element={
           <>
             <Header
-              isLoggedIn={true}
+              isLoggedIn={isLoggedIn}
               onBurgerClick={handleBurgerClick}
             />
             <Movies />
@@ -134,7 +148,25 @@ function App() {
         }/>
         <Route path="/profile" element={
           <>
-            <Header
+            <ProtectedRoute 
+              element={Header}
+              isLoggedIn={isLoggedIn}
+              onBurgerClick={handleBurgerClick}
+            />
+            <ProtectedRoute 
+              element={Navigation}
+              isLoggedIn={isLoggedIn}
+              isOpened={isBurgerOpened}
+              onCloseClick={closeBurgerMenu}
+            />
+            <ProtectedRoute 
+              element={Profile}
+              isLoggedIn={isLoggedIn}
+              onSubmit={handleUpdateProfile}
+              errMessage={errMessage}
+              onLogout={handleLogOut}
+            />
+            {/* <Header
               isLoggedIn={true}
               onBurgerClick={handleBurgerClick}
             />
@@ -142,7 +174,11 @@ function App() {
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
             />
-            <Profile />
+            <Profile
+              onSubmit={handleUpdateProfile}
+              errMessage={errMessage}
+              onLogout={handleLogOut}
+            /> */}
           </>
         }/>
         <Route path="/signup" element={
