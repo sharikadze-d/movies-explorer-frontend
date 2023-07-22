@@ -67,21 +67,19 @@ function App() {
     mainApi.login(userData)
       .then((res) => {
         localStorage.setItem('jwt', res.jwt)
-        console.log(localStorage.getItem('jwt'));
-        // setIsLoggedIn(true);
         mainApi.getUserData(res.jwt)
           .then((res) => {
             setIsLoggedIn(true);
             navigate('/movies');
           })
       })
-      // .then(() => navigate('/movies'))
       .catch((err) => {setErrMessage(err.message)})
   }
 
   async function tokenCheck() {
     const token = localStorage.getItem('jwt');
     if (!token) {
+      setIsTokenChecked(true);
       return;
     }
     mainApi.getUserData()
@@ -89,11 +87,11 @@ function App() {
         if (res) {
           setIsLoggedIn(true);
           setCurrentUser(res);
-          setIsTokenChecked(true);
           navigate('/movies');
         }
        })
        .catch(err => setErrMessage(err.message))
+       .finally(() => setIsTokenChecked(true))
   }
 
   function handleUpdateProfile (userData) {
@@ -105,6 +103,7 @@ function App() {
   function handleLogOut () {
     setIsLoggedIn(false);
     localStorage.removeItem('jwt');
+    navigate('/');
   }
 
   useEffect(() => {
@@ -131,33 +130,56 @@ function App() {
           </>
         }/>
         <Route path="/movies" element={
+          istokenChecked ?
           <>
-            <Header
+            <ProtectedRoute 
+              element={Header}
               isLoggedIn={isLoggedIn}
               onBurgerClick={handleBurgerClick}
             />
-            <Movies />
-            <Navigation
+            <ProtectedRoute 
+              element={Navigation}
+              isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
             />
-            <Footer />
-          </>
+            <ProtectedRoute 
+              element={Movies}
+              isLoggedIn={isLoggedIn}
+            />
+            <ProtectedRoute 
+              element={Footer}
+              isLoggedIn={isLoggedIn}
+            />
+          </> :
+          <Preloader isLoading={isLoading} />
         }/>
         <Route path="/saved-movies" element={
+          istokenChecked ?
           <>
-            <Header
-              isLoggedIn={true}
+            <ProtectedRoute 
+              element={Header}
+              isLoggedIn={isLoggedIn}
               onBurgerClick={handleBurgerClick}
             />
-            <Navigation
+            <ProtectedRoute 
+              element={Navigation}
+              isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
             />
-            <SavedMovies />
-            <Footer />
-          </>
+            <ProtectedRoute 
+              element={SavedMovies}
+              isLoggedIn={isLoggedIn}
+            />
+            <ProtectedRoute 
+              element={Footer}
+              isLoggedIn={isLoggedIn}
+            />
+          </> :
+          <Preloader isLoading={isLoading} /> 
         }/>
+
         <Route path="/profile" element={
           istokenChecked ?
           <>
@@ -182,12 +204,15 @@ function App() {
           </> :
           <Preloader isLoading={isLoading} />        
         }/>
+
         <Route path="/signup" element={
           <Register onSubmit={handleRegister} errMessage={errMessage}/>
         }/>
+
         <Route path="/signin" element={
           <Login errMessage={errMessage} onSubmit={handleLogin}/>
         }/>
+
         <Route path="*" element={<NotFound />}/>
         
       </Routes>
