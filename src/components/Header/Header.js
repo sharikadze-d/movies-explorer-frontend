@@ -26,8 +26,6 @@ export default function Header({ isLoggedIn, onBurgerClick }) {
     
   )
 
-  console.log(isLoggedIn)
-
   return (
     <header className={isLoggedIn ? 'header header_color_grey' : 'header'}>
       <div className='header__wrapper'>

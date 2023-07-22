@@ -18,6 +18,7 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import InfoPopup from '../InfoPopup/InfoPopup';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
+import Preloader from '../Preloader/Preloader';
 
 function App() {
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ function App() {
   const [errMessage, setErrMessage] = useState('');
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [istokenChecked, setIsTokenChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   function handleBurgerClick() {
     setIsBurgerOpened(true);
@@ -76,7 +79,7 @@ function App() {
       .catch((err) => {setErrMessage(err.message)})
   }
 
-  function tokenCheck() {
+  async function tokenCheck() {
     const token = localStorage.getItem('jwt');
     if (!token) {
       return;
@@ -86,6 +89,7 @@ function App() {
         if (res) {
           setIsLoggedIn(true);
           setCurrentUser(res);
+          setIsTokenChecked(true);
           navigate('/movies');
         }
        })
@@ -104,12 +108,20 @@ function App() {
   }
 
   useEffect(() => {
-    tokenCheck();
+    setIsLoading(true);
+    tokenCheck()
+      .then(() => setIsLoading(false))
+      .catch((err) => {
+        setIsLoading(false);
+        setErrMessage(err.message);
+        openInfoPopup();
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn])
   
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="app">
+      <div className={`app ${isLoading ? 'app_preloader' : ''}`}>
       <Routes>
         <Route path="/" element={
           <>
@@ -147,6 +159,7 @@ function App() {
           </>
         }/>
         <Route path="/profile" element={
+          istokenChecked ?
           <>
             <ProtectedRoute 
               element={Header}
@@ -166,20 +179,8 @@ function App() {
               errMessage={errMessage}
               onLogout={handleLogOut}
             />
-            {/* <Header
-              isLoggedIn={true}
-              onBurgerClick={handleBurgerClick}
-            />
-            <Navigation
-              isOpened={isBurgerOpened}
-              onCloseClick={closeBurgerMenu}
-            />
-            <Profile
-              onSubmit={handleUpdateProfile}
-              errMessage={errMessage}
-              onLogout={handleLogOut}
-            /> */}
-          </>
+          </> :
+          <Preloader isLoading={isLoading} />        
         }/>
         <Route path="/signup" element={
           <Register onSubmit={handleRegister} errMessage={errMessage}/>
