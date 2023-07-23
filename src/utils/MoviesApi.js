@@ -7,7 +7,7 @@ export default class MoviesApi {
   }
 
   getMovies() {
-    return fetch(this._url, {
+    return fetch(`${this._url}/beatfilm-movies`, {
       headers: this._headers,
       method: 'GET',
     })

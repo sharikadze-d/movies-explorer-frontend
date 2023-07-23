@@ -25,11 +25,14 @@ const mainApiConfig = {
 }
 
 const moviesApiConfig = {
-  baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
+  baseUrl: 'https://api.nomoreparties.co',
   headers: {
     'Content-Type': 'application/json',
   }
 }
+
+const SCREEN_SIZE_BREAKPOINT_M = 500;
+const SCREEN_SIZE_BREAKPOINT_L = 900;
 
 const EMAIL_PATTERN = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$";
 const USERNAME_PATTERN = "^[a-zA-ZА-Яа-яёЁ \\s \\-]*$";
@@ -47,5 +50,7 @@ export {
   USERNAME_PATTERN,
   ERROR_MESSAGE_DEFAULT,
   ERROR_MESSAGE_USERNAME,
-  ERROR_MESSAGE_EMAIL
+  ERROR_MESSAGE_EMAIL,
+  SCREEN_SIZE_BREAKPOINT_M,
+  SCREEN_SIZE_BREAKPOINT_L,
 }

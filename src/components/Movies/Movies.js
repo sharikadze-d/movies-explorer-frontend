@@ -15,7 +15,8 @@ export default function Movies({ api }) {
     let result = [];
     setIsLoading(true);
     api.getMovies()
-      .then(async (res) => {
+      .then((res) => {
+        console.log(res)
         result = filterByKeyWord(res, keyWord);
         result = filterByDuration(result, checkboxStatus);
         setLastSearch({ keyWord, checkboxStatus, result })
@@ -51,13 +52,11 @@ export default function Movies({ api }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSearchUpdated, storageChecked])
 
-  console.log(lastSearch)
-
   return (
     <main>
       <SearchForm onSearchClick={moviesSearch} lastSearch={lastSearch} />
       <Preloader isLoading={isLoading}/>
-      <MoviesCardList isMoreButtonHidden={false}/>
+      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result}/>
     </main>
   )
 }
