@@ -14,22 +14,7 @@ export default function MoviesCardList({ isMoreButtonHidden }) {
   return (
     <section className="card-list">
       <div className="card-list__container">
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
-        <MoviesCard movieData={movieData} />
+        
       </div>
       <div className={`card-list__spacer ${isMoreButtonHidden ? '' : 'card-list__spacer_hidden'}`} />
       <button

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 
 import MainApi from '../../utils/MainApi';
-import { mainApiConfig } from '../../utils/constants';
+import { mainApiConfig, moviesApiConfig } from '../../utils/constants';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 import Main from '../Main/Main.js';
@@ -19,6 +19,7 @@ import NotFound from '../NotFound/NotFound';
 import InfoPopup from '../InfoPopup/InfoPopup';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import Preloader from '../Preloader/Preloader';
+import MoviesApi from '../../utils/MoviesApi';
 
 function App() {
   const navigate = useNavigate();
@@ -48,8 +49,8 @@ function App() {
     isRegistred && navigate('/signin', {replace: true});
   }
 
-  const mainApi = new MainApi(mainApiConfig)
-
+  const mainApi = new MainApi(mainApiConfig);
+  const moviesApi = new MoviesApi(moviesApiConfig);
 
   function handleRegister(userData) {
     mainApi.register(userData)
@@ -103,6 +104,7 @@ function App() {
   function handleLogOut () {
     setIsLoggedIn(false);
     localStorage.removeItem('jwt');
+    localStorage.removeItem('lastSearch');
     navigate('/');
   }
 
@@ -146,6 +148,7 @@ function App() {
             <ProtectedRoute 
               element={Movies}
               isLoggedIn={isLoggedIn}
+              api={moviesApi}
             />
             <ProtectedRoute 
               element={Footer}
