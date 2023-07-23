@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Preloader from '../Preloader/Preloader';
+
 
 export default function Movies({ api }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,9 +16,9 @@ export default function Movies({ api }) {
     setIsLoading(true);
     api.getMovies()
       .then((res) => {
-        console.log(res)
         result = filterByKeyWord(res, keyWord);
         result = filterByDuration(result, checkboxStatus);
+        // console.log(result)
         setLastSearch({ keyWord, checkboxStatus, result })
         setLastSearchUpdated(true);
       })
@@ -55,8 +55,7 @@ export default function Movies({ api }) {
   return (
     <main>
       <SearchForm onSearchClick={moviesSearch} lastSearch={lastSearch} />
-      <Preloader isLoading={isLoading}/>
-      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result}/>
+      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch} isLoading={isLoading}/>
     </main>
   )
 }

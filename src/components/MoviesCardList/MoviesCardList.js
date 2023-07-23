@@ -3,9 +3,10 @@ import '../Opacity/Opacity.css'
 
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import Preloader from '../Preloader/Preloader';
 import { SCREEN_SIZE_BREAKPOINT_M, SCREEN_SIZE_BREAKPOINT_L } from '../../utils/constants'
 
-export default function MoviesCardList({ isMoreButtonHidden, moviesData }) {
+export default function MoviesCardList({ isMoreButtonHidden, moviesData, isLoading }) {
   const [width, setWidth] = useState(window.innerWidth);
   const [step, setStep] = useState(checkBaseStep());
   const [renderedCards, setRenderedCards] = useState([]);
@@ -18,7 +19,6 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData }) {
     baseArray.slice(lastRendered, lastRendered + step).forEach(card => {
       newArray.push(card);
     });
-    console.log(newArray)
     setLastRendered(lastRendered + step);
     setRenderedCards(newArray)
   }
@@ -35,7 +35,7 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData }) {
   }
 
   useEffect(() => {
-    renderCards(moviesData, baseAmount)
+    renderCards(moviesData.result, baseAmount)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moviesData, renderedCards]);
 
@@ -54,28 +54,27 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData }) {
   }
 
   function addCards() {
-    renderCards(moviesData, step)
+    renderCards(moviesData.result, step)
   }
 
-  // console.log(renderedCards);
   return (
-    <section className="card-list">
-      <div className="card-list__container">{
-        moviesData ? 
-        
-        renderedCards.map((movie) => {
-          // console.log(movie)
-          return(<MoviesCard key={movie.id} movieData={movie} />)
-        }) :
-        'NotFound'
-      }</div>
-      <div className={`card-list__spacer ${isMoreButtonHidden ? '' : 'card-list__spacer_hidden'}`} />
-      <button
-        type="button"
-        className={`card-list__more-btn ${isMoreButtonHidden ? 'card-list__more-btn_hidden' : ''} opacity`}
-        onClick={addCards}>
-          Ещё
-      </button>
-    </section>
+    isLoading ?
+      <Preloader isLoading={isLoading} /> :
+      <section className="card-list">
+        <div className="card-list__container">{
+          moviesData.result ? 
+          renderedCards.map((movie) => {
+            return(<MoviesCard key={movie.id} movieData={movie} />)
+          }) :
+          'Ничего не найдено'
+        }</div>
+        <div className={`card-list__spacer ${isMoreButtonHidden ? '' : 'card-list__spacer_hidden'}`} />
+        <button
+          type="button"
+          className={`card-list__more-btn ${isMoreButtonHidden ? 'card-list__more-btn_hidden' : ''} opacity`}
+          onClick={addCards}>
+            Ещё
+        </button>
+      </section>    
   )
 }
