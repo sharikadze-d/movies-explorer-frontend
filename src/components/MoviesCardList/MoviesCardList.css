@@ -20,6 +20,12 @@
   gap: 36px 20px;
 }
 
+.card-list__not-found {
+  margin: 50px 0 100px;
+  text-align: center;
+  width: 100%;
+}
+
 .card-list__more-btn {
   border: none;
   background-color: #2f2f2f;
@@ -31,6 +37,7 @@
   box-sizing: border-box;
   margin: 9px auto 160px;
   border-radius: 6px;
+  display: block;
 }
 
 .card-list__more-btn_hidden {
@@ -55,8 +62,8 @@
   }
 
   .card-list__more-btn_hidden {
-    display: block;
-    visibility: hidden;
+    display: none;
+    /* visibility: hidden; */
   }
 }
 

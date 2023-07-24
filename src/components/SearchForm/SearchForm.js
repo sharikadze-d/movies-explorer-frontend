@@ -1,7 +1,7 @@
 import './SearchForm.css';
 import '../Opacity/Opacity.css'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
@@ -21,6 +21,11 @@ export default function SearchForm({ onSearchClick, lastSearch }) {
     evt.preventDefault();
     onSearchClick(fieldValue, checkboxStatus);
   }
+
+  useEffect(() => {
+    if (typeof lastSearch.checkboxStatus === 'boolean')
+    setCheckboxStatus(lastSearch.checkboxStatus)
+  }, [lastSearch])
 
   return (
     <section className="search">

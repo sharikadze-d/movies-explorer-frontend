@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
+import Preloader from '../Preloader/Preloader';
 
 export default function Movies({ api }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +56,10 @@ export default function Movies({ api }) {
   return (
     <main>
       <SearchForm onSearchClick={moviesSearch} lastSearch={lastSearch} />
-      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result} isLoading={isLoading}/>
+      {
+      isLoading ? <Preloader isLoading={isLoading} /> :
+      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result} />
+      }
     </main>
   )
 }
