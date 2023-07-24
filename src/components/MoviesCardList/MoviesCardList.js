@@ -4,13 +4,16 @@ import '../Opacity/Opacity.css'
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { SCREEN_SIZE_BREAKPOINT_M, SCREEN_SIZE_BREAKPOINT_L } from '../../utils/constants'
+import { toHaveAccessibleDescription } from '@testing-library/jest-dom/matchers';
 
-export default function MoviesCardList({ isMoreButtonHidden, moviesData, isLoading }) {
+export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSavedMovies, mainApi}) {
   const [width, setWidth] = useState(window.innerWidth);
   const [step, setStep] = useState(checkBaseStep());
   const [baseAmount, setBaseAmount] = useState(checkBaseAmount());
   const [buttonHidden, setButtonHidden] = useState(isMoreButtonHidden);
- 
+  const [savedMoviesList, setSavedMoviesList] = useState([]);
+  const [cardDeleted, setCardDeleted] = useState(false);
+
   function handleResize() {
     setWidth(window.innerWidth);
     setStep(checkBaseStep());
@@ -45,24 +48,78 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isLoadi
       else setButtonHidden(false);
   }
 
+  function handleLikeClick(movieData) {
+    console.log(movieData)
+    mainApi.addMovie(movieData)
+      .catch(err => console.log(err.message))
+  }
+
+  function handleDislikeClick(movieData) {
+    mainApi.deleteMovie(movieData)
+      .then((res) => removeSavedMovie(res))
+      .then(() => setCardDeleted(!cardDeleted))
+      .catch(err => console.log(err.message))
+  }
+
   useEffect(() => { 
     if (moviesData)
     checkButtonState(baseAmount, moviesData.length);
+    if (isSavedMovies)
+    setButtonHidden(true)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [baseAmount])
+  }, [baseAmount, isSavedMovies])
+
+  useEffect(() => {
+    if (isSavedMovies)
+      mainApi.getMovies()
+        .then(res => {
+          console.log(res)
+          setSavedMoviesList(res)
+        })
+        .catch((err) => setSavedMoviesList(err.message))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSavedMovies, cardDeleted])
+
+  function removeSavedMovie({_id}) {
+    savedMoviesList.splice(savedMoviesList.findIndex((item) => item._id === _id), 1)
+  }
+
+  const moviesMarkup = () => {
+    return (
+      moviesData && moviesData.length ? 
+        <div className="card-list__container">{
+          moviesData.map((movie, index) => {
+            if (index < baseAmount)
+            return(<MoviesCard key={movie.id} movieData={movie} onLlikeClick={handleLikeClick} onDislikeClick={handleDislikeClick}/>)
+            // eslint-disable-next-line array-callback-return
+            return;
+          })
+        }</div> :
+        <h2 className="card-list__not-found">Ничего не найдено</h2>
+    )
+  }
+
+  const savedMoviesMarkup = () => {
+    return (
+      savedMoviesList && savedMoviesList.length ? 
+      <div className="card-list__container">{
+       savedMoviesList.map((movie, index) => {
+          return(
+            <MoviesCard
+              key={index}
+              movieData={movie}
+              onLlikeClick={handleLikeClick}
+              onDislikeClick={handleDislikeClick}
+              isSavedMovies={isSavedMovies}/>)
+        })
+      }</div> :
+      <h2 className="card-list__not-found">Ничего не найдено</h2>
+    )
+  }
 
   return (
     <section className="card-list">
-    {moviesData && moviesData.length ? 
-      <div className="card-list__container">{
-        moviesData.map((movie, index) => {
-          if (index < baseAmount)
-          return(<MoviesCard key={movie.id} movieData={movie} />)
-          // eslint-disable-next-line array-callback-return
-          return;
-        })
-      }</div> :
-      <h2 className="card-list__not-found">Ничего не найдено</h2>}
+    {isSavedMovies ? savedMoviesMarkup() : moviesMarkup()}
       <button
         type="button"
         className={`card-list__more-btn ${buttonHidden ? 'card-list__more-btn_hidden' : ''} opacity`}

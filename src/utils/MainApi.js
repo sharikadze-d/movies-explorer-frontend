@@ -52,4 +52,29 @@ export default class MainApi {
     })
     .then(handleResponse)
   }
+
+  addMovie (movieData) {
+    return fetch(`${this._url}/movies`, {
+      headers: this._headers,
+      method: 'POST',
+      body: JSON.stringify(movieData)
+    })
+    .then(handleResponse)
+  }
+
+  deleteMovie ({_id}) {
+    return fetch(`${this._url}/movies/${_id}`, {
+      headers: this._headers,
+      method: 'DELETE',
+    })
+    .then(handleResponse)
+  }
+
+  getMovies () {
+    return fetch(`${this._url}/movies`, {
+      headers: this._headers,
+      method: 'GET',
+    })
+    .then(handleResponse)
+  }
 }

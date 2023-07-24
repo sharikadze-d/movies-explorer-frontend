@@ -6,7 +6,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 import Preloader from '../Preloader/Preloader';
 
-export default function Movies({ api }) {
+export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastSearch, setLastSearch] = useState({});
   const [lastSearchUpdated, setLastSearchUpdated] = useState(false);
@@ -15,11 +15,10 @@ export default function Movies({ api }) {
   function moviesSearch(keyWord, checkboxStatus) {
     let result = [];
     setIsLoading(true);
-    api.getMovies()
+    moviesApi.getMovies()
       .then((res) => {
         result = filterByKeyWord(res, keyWord);
         result = filterByDuration(result, checkboxStatus);
-        // console.log(result)
         setLastSearch({ keyWord, checkboxStatus, result })
         setLastSearchUpdated(true);
       })
@@ -58,7 +57,7 @@ export default function Movies({ api }) {
       <SearchForm onSearchClick={moviesSearch} lastSearch={lastSearch} />
       {
       isLoading ? <Preloader isLoading={isLoading} /> :
-      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result} />
+      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result} isSavedMovies={isSavedMovies} mainApi={mainApi}/>
       }
     </main>
   )

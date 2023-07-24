@@ -11,7 +11,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
 import Navigation from '../Navigation/Navigation';
-import SavedMovies from '../SavedMovies/SavedMovies';
+// import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
@@ -88,7 +88,7 @@ function App() {
         if (res) {
           setIsLoggedIn(true);
           setCurrentUser(res);
-          navigate('/movies');
+          // navigate('/movies');
         }
        })
        .catch(err => setErrMessage(err.message))
@@ -148,7 +148,9 @@ function App() {
             <ProtectedRoute 
               element={Movies}
               isLoggedIn={isLoggedIn}
-              api={moviesApi}
+              moviesApi={moviesApi}
+              mainApi={mainApi}
+              isSavedMovies={false}
             />
             <ProtectedRoute 
               element={Footer}
@@ -172,8 +174,12 @@ function App() {
               onCloseClick={closeBurgerMenu}
             />
             <ProtectedRoute 
-              element={SavedMovies}
+              element={Movies}
               isLoggedIn={isLoggedIn}
+              moviesApi={moviesApi}
+              mainApi={mainApi}
+              isSavedMovies={true}
+
             />
             <ProtectedRoute 
               element={Footer}
