@@ -55,7 +55,7 @@ export default function Movies({ api }) {
   return (
     <main>
       <SearchForm onSearchClick={moviesSearch} lastSearch={lastSearch} />
-      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch} isLoading={isLoading}/>
+      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result} isLoading={isLoading}/>
     </main>
   )
 }

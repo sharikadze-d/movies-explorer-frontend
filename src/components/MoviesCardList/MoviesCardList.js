@@ -9,19 +9,31 @@ import { SCREEN_SIZE_BREAKPOINT_M, SCREEN_SIZE_BREAKPOINT_L } from '../../utils/
 export default function MoviesCardList({ isMoreButtonHidden, moviesData, isLoading }) {
   const [width, setWidth] = useState(window.innerWidth);
   const [step, setStep] = useState(checkBaseStep());
-  const [renderedCards, setRenderedCards] = useState([]);
-  const [lastRendered, setLastRendered] = useState(0);
+  // const [renderedCards, setRenderedCards] = useState([]);
+  // const [lastRendered, setLastRendered] = useState(0);
   const [baseAmount, setBaseAmount] = useState(checkBaseAmount());
+  // const [buttonHidden, setButtonHidden] = useState(isMoreButtonHidden);
+  // const [initialCards, setInitialCards] = useState(getInitialCards(baseAmount))
 
-  function renderCards(baseArray, step) {
-    if (!baseArray) return;
-    let newArray = renderedCards;
-    baseArray.slice(lastRendered, lastRendered + step).forEach(card => {
-      newArray.push(card);
-    });
-    setLastRendered(lastRendered + step);
-    setRenderedCards(newArray)
-  }
+  // function getInitialCards(number) {
+  //   let initialArray = [];
+  //   console.log(moviesData)
+  //   typeof moviesData === 'array' ? moviesData.slice(0, number).forEach(card => {
+  //     initialArray.push(card);
+  //   }) : initialArray = []
+  //   // console.log(initialArray, number)
+  //   return initialArray;
+  // }
+
+  // function renderCards(baseArray, step) {
+  //   if (!baseArray) return;
+  //   let newArray = renderedCards;
+  //   baseArray.slice(lastRendered, lastRendered + step).forEach(card => {
+  //     newArray.push(card);
+  //   });
+  //   setLastRendered(lastRendered + step);
+  //   setRenderedCards(newArray)
+  // }
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -34,10 +46,10 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isLoadi
       return 4;
   }
 
-  useEffect(() => {
-    renderCards(moviesData.result, baseAmount)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moviesData, renderedCards]);
+  // useEffect(() => {
+  //   renderCards(moviesData, baseAmount)
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [moviesData, renderedCards]);
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -54,21 +66,23 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isLoadi
   }
 
   function addCards() {
-    renderCards(moviesData.result, step)
+    setBaseAmount(baseAmount + step);
   }
 
   return (
     isLoading ?
       <Preloader isLoading={isLoading} /> :
       <section className="card-list">
+      {moviesData && moviesData.length ? 
         <div className="card-list__container">{
-          moviesData.result ? 
-          renderedCards.map((movie) => {
+          moviesData.map((movie, index) => {
+            if (index < baseAmount)
             return(<MoviesCard key={movie.id} movieData={movie} />)
-          }) :
-          'Ничего не найдено'
-        }</div>
-        <div className={`card-list__spacer ${isMoreButtonHidden ? '' : 'card-list__spacer_hidden'}`} />
+            // eslint-disable-next-line array-callback-return
+            return;
+          })
+        }</div> :
+        <h2>Ничего не найдено</h2>}
         <button
           type="button"
           className={`card-list__more-btn ${isMoreButtonHidden ? 'card-list__more-btn_hidden' : ''} opacity`}
