@@ -46,7 +46,6 @@ function App() {
 
   function closePopupInfo() {
     setIsInfoPopupOpen(false);
-    isRegistred && navigate('/signin', {replace: true});
   }
 
   const mainApi = new MainApi(mainApiConfig);
@@ -55,8 +54,9 @@ function App() {
   function handleRegister(userData) {
     mainApi.register(userData)
       .then(() => { 
-        setIsRegistred(true)
-        openInfoPopup()
+        setIsRegistred(true);
+        openInfoPopup();
+        handleLogin(userData);
        })
       .catch((err) => {
         setIsRegistred(false);
@@ -71,7 +71,9 @@ function App() {
         mainApi.getUserData(res.jwt)
           .then((res) => {
             setIsLoggedIn(true);
+            setCurrentUser(res);
             navigate('/movies');
+            setErrMessage('');
           })
       })
       .catch((err) => {setErrMessage(err.message)})
@@ -88,7 +90,6 @@ function App() {
         if (res) {
           setIsLoggedIn(true);
           setCurrentUser(res);
-          // navigate('/movies');
         }
        })
        .catch(err => setErrMessage(err.message))
