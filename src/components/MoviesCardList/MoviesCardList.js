@@ -11,7 +11,7 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
   const [baseAmount, setBaseAmount] = useState(checkBaseAmount());
   const [buttonHidden, setButtonHidden] = useState(isMoreButtonHidden);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
-  const [cardDeleted, setCardDeleted] = useState(false);
+  const [moviesList, setMoviesList] = useState(moviesData);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -48,11 +48,16 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
   }
 
   function handleLikeClick(movieData) {
-    console.log(movieData)
+    delete movieData._id
+    delete movieData.__v
     mainApi.addMovie(movieData)
-      .then(() => {
-        // mainApi.getMovies()
-        // .then((res) => setSavedMoviesList(res))
+      .then((res) => {
+        let bufferArray = moviesList;
+        bufferArray = bufferArray.map(item => {
+          if (item.movieId === res.movieId) return res
+            else return item;
+        })
+        setMoviesList(bufferArray);
         getSavedMovies();
       })
       .catch(err => console.log(err.message))
@@ -60,11 +65,7 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
 
   function handleDislikeClick(movieData) {
     mainApi.deleteMovie(movieData)
-      // .then((res) => removeSavedMovie(res))
-      // .then(() => setCardDeleted(!cardDeleted))
       .then(() => {
-        // mainApi.getMovies()
-        // .then((res) => setSavedMoviesList(res))
         getSavedMovies();
       })
       .catch(err => console.log(err.message))
@@ -82,16 +83,11 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
     if (isSavedMovies)
       mainApi.getMovies()
         .then(res => {
-          console.log(res)
           setSavedMoviesList(res)
         })
         .catch((err) => setSavedMoviesList(err.message))
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSavedMovies, cardDeleted])
-
-  useEffect(() => {
-
-  })
+  }, [isSavedMovies])
 
   function getSavedMovies() {
     mainApi.getMovies()
@@ -99,23 +95,24 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
       .catch((err) => console.log(err))
   }
 
-  function removeSavedMovie({_id}) {
-    savedMoviesList.splice(savedMoviesList.findIndex((item) => item._id === _id), 1)
+  function checkLike(array, movie) {
+    return array.some((item) => item.movieId === movie.movieId)
   }
 
   const moviesMarkup = () => {
     return (
       moviesData && moviesData.length ? 
         <div className="card-list__container">{
-          moviesData.map((movie, index) => {
+          (moviesList || moviesData).map((movie, index) => {
             if (index < baseAmount)
             return(
               <MoviesCard
-                key={movie.movieId}
+                key={index}
                 movieData={movie}
                 onLikeClick={handleLikeClick}
                 onDislikeClick={handleDislikeClick}
                 savedMovies={savedMoviesList}
+                isLiked={checkLike(savedMoviesList, movie)}
               />
             )
             // eslint-disable-next-line array-callback-return
@@ -130,7 +127,8 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
     return (
       savedMoviesList && savedMoviesList.length ? 
       <div className="card-list__container">{
-       savedMoviesList.map((movie, index) => {
+        savedMoviesList.map((movie, index) => {
+          // checkLike(savedMoviesList, movie);
           return(
             <MoviesCard
               key={index}
@@ -139,6 +137,7 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
               onDislikeClick={handleDislikeClick}
               isSavedMovies={isSavedMovies}
               savedMovies={savedMoviesList}
+              isLiked={checkLike(savedMoviesList, movie)}
             />
           )
         })

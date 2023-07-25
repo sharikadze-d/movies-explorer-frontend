@@ -4,12 +4,10 @@ import '../Opacity/Opacity.css'
 import { moviesApiConfig } from '../../utils/constants'
 import { Link } from 'react-router-dom';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isSavedMovies, savedMovies }) {
-  // const { nameRU, duration, image, trailerLink } = movieData;
-  const [liked, setLiked] = useState(checkWhichPage());
-  console.log(movieData)
+export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isSavedMovies, isLiked }) {
+  const [liked, setLiked] = useState(isLiked);
 
   function minToHours(timeMin) {
     const hours = Math.floor(timeMin / 60);
@@ -17,10 +15,6 @@ export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isS
 
     if (hours > 0) return `${hours}ч ${minutes}м`
       else return `${minutes}м`
-  }
-
-  function checkWhichPage () {
-    if (isSavedMovies) return true;
   }
 
   function handleLikeClick () {
@@ -33,6 +27,10 @@ export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isS
     setLiked(false);
   }
 
+  useEffect(() => {
+    setLiked(isLiked)
+  }, [isLiked])
+
   return (
     <article className="card">
       <div>
@@ -43,7 +41,7 @@ export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isS
         <h3 className="card__name">{movieData.nameRU}</h3>
         <button
           type="button"
-          className={`card__like-btn opacity ${liked ? 'card__like-btn_active' : ''}`}
+          className={`card__like-btn opacity ${liked || isSavedMovies ? 'card__like-btn_active' : ''}`}
           onClick={liked ? handleDislikeClick : handleLikeClick}></button>
       </div>
       </div>
