@@ -41,7 +41,7 @@ export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isS
         <h3 className="card__name">{movieData.nameRU}</h3>
         <button
           type="button"
-          className={`card__like-btn opacity ${liked || isSavedMovies ? 'card__like-btn_active' : ''}`}
+          className={`card__like-btn opacity ${liked ? 'card__like-btn_active' : ''} ${isSavedMovies ? 'card__like-btn_type_delete' : ''}`}
           onClick={liked ? handleDislikeClick : handleLikeClick}></button>
       </div>
       </div>

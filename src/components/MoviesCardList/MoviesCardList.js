@@ -154,7 +154,7 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
           )
         })
       }</div> :
-      <h2 className="card-list__not-found">Ничего не найдено</h2>
+      <h2 className="card-list__error">Ничего не найдено</h2>
     )
   }
 

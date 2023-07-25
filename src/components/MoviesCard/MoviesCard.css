@@ -45,6 +45,10 @@
   background: url('../../images/like-active.svg') no-repeat center / cover;
 }
 
+.card__like-btn_type_delete {
+  background: url('../../images/delete.svg') no-repeat center / cover;
+}
+
 .card__duration {
   color: #8b8b8b;
   font-size: 11px;
