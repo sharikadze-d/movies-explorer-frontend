@@ -128,7 +128,7 @@ export default function MoviesCardList({
             if (index < baseAmount)
             return(
               <MoviesCard
-                key={index}
+                key={movie.movieId}
                 movieData={movie}
                 onLikeClick={handleLikeClick}
                 onDislikeClick={handleDislikeClick}
@@ -151,7 +151,7 @@ export default function MoviesCardList({
         ((savedMoviesListFiltred && savedMoviesListFiltred.length) ? savedMoviesListFiltred : savedMoviesList).map((movie, index) => {
           return(
             <MoviesCard
-              key={index}
+              key={movie.movieId}
               movieData={movie}
               onLlikeClick={handleLikeClick}
               onDislikeClick={handleDislikeClick}
