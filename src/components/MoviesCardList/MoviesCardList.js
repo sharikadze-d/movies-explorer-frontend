@@ -5,14 +5,22 @@ import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { SCREEN_SIZE_BREAKPOINT_M, SCREEN_SIZE_BREAKPOINT_L } from '../../utils/constants'
 
-export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSavedMovies, mainApi, error, setError}) {
+export default function MoviesCardList({
+  isMoreButtonHidden,
+  moviesData,
+  isSavedMovies,
+  mainApi,
+  error,
+  setError,
+  savedMoviesList,
+  setSavedMoviesList,
+  savedMoviesListFiltred}) {
+
   const [width, setWidth] = useState(window.innerWidth);
   const [step, setStep] = useState(checkBaseStep());
   const [baseAmount, setBaseAmount] = useState(checkBaseAmount());
   const [buttonHidden, setButtonHidden] = useState(isMoreButtonHidden);
-  const [savedMoviesList, setSavedMoviesList] = useState([]);
   const [moviesList, setMoviesList] = useState(moviesData);
-  // const [error, setError] = useState(false);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -140,7 +148,7 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
     return (
       savedMoviesList && savedMoviesList.length ? 
       <div className="card-list__container">{
-        savedMoviesList.map((movie, index) => {
+        ((savedMoviesListFiltred && savedMoviesListFiltred.length) ? savedMoviesListFiltred : savedMoviesList).map((movie, index) => {
           return(
             <MoviesCard
               key={index}

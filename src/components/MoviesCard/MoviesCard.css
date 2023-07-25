@@ -39,6 +39,7 @@
   background: url('../../images/like.svg') no-repeat center / cover;
   width: 24px;
   height: 24px;
+  align-self: flex-start;
 }
 
 .card__like-btn_active {

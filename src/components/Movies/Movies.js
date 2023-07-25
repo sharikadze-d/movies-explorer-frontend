@@ -1,6 +1,5 @@
 import './Movies.css';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -13,8 +12,8 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   const [lastSearchUpdated, setLastSearchUpdated] = useState(false);
   const [storageChecked, setStorageChecked] = useState(false);
   const [error, setError] = useState(false);
-
-  const navigate = useNavigate();
+  const [savedMoviesList, setSavedMoviesList] = useState([]);
+  const [savedMoviesListFiltred, setSavedMoviesListFiltred] = useState([]);
 
   function moviesSearch(keyWord, checkboxStatus) {
     let result = [];
@@ -42,11 +41,16 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
       })
       .then(() => localStorage.setItem('lastSearch', JSON.stringify(lastSearch)))
       .then(() => setIsLoading(false))
-      .then(() => navigate('/movies'))
       .catch((err) => {
         console.log(err);
         setError(true);
       })
+  }
+
+  function savedMoviesSearch(keyword, checkboxStatus) {
+    let result = filterByKeyWord(savedMoviesList, keyword);
+    result = filterByDuration(result, checkboxStatus);
+    setSavedMoviesListFiltred(result);
   }
 
   function filterByKeyWord(arr, keyWord) {
@@ -77,7 +81,7 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
 
   return (
     <main className="movies">
-      <SearchForm onSearchClick={moviesSearch} lastSearch={lastSearch} />
+      <SearchForm onSearchClick={isSavedMovies ? savedMoviesSearch : moviesSearch} lastSearch={lastSearch} />
       {
         lastSearch && Object.keys(lastSearch).length ?
         isLoading ? <Preloader isLoading={isLoading} /> :
@@ -88,6 +92,9 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
           mainApi={mainApi}
           error={error}
           setError={setError}
+          savedMoviesList={savedMoviesList}
+          setSavedMoviesList={setSavedMoviesList}
+          savedMoviesListFiltred={savedMoviesListFiltred}
         /> :
         <div className="movies__spacer"></div>
       }
