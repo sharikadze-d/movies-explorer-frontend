@@ -144,6 +144,7 @@ function App() {
               isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
+              movies={true}
             />
             <ProtectedRoute 
               element={Movies}
@@ -172,6 +173,7 @@ function App() {
               isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
+              savedMovies={true}
             />
             <ProtectedRoute 
               element={Movies}
@@ -202,6 +204,7 @@ function App() {
               isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
+              profile={true}
             />
             <ProtectedRoute 
               element={Profile}
