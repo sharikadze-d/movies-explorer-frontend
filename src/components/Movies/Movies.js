@@ -1,5 +1,6 @@
 import './Movies.css';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -12,6 +13,8 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   const [lastSearchUpdated, setLastSearchUpdated] = useState(false);
   const [storageChecked, setStorageChecked] = useState(false);
 
+  const navigate = useNavigate();
+
   function moviesSearch(keyWord, checkboxStatus) {
     let result = [];
     setIsLoading(true);
@@ -19,11 +22,27 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
       .then((res) => {
         result = filterByKeyWord(res, keyWord);
         result = filterByDuration(result, checkboxStatus);
+        result = result.map((movie) => {
+          let image = movie.image;
+          let id = movie.id;
+          delete movie.id;
+          delete movie.created_at;
+          delete movie.updated_at;
+          return {
+            ...movie,
+            image: image.url,
+            thumbnail: image.formats.thumbnail.url,
+            movieId: id,
+          }
+        })
+        // result = {...result, image: image.url, thumbnail: image.thumbnail.url }
+        console.log(result)
         setLastSearch({ keyWord, checkboxStatus, result })
         setLastSearchUpdated(true);
       })
       .then(() => localStorage.setItem('lastSearch', JSON.stringify(lastSearch)))
       .then(() => setIsLoading(false))
+      .then(() => navigate('/movies'))
   }
 
   function filterByKeyWord(arr, keyWord) {

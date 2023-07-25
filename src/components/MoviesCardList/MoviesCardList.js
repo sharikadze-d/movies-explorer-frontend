@@ -4,7 +4,6 @@ import '../Opacity/Opacity.css'
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { SCREEN_SIZE_BREAKPOINT_M, SCREEN_SIZE_BREAKPOINT_L } from '../../utils/constants'
-import { toHaveAccessibleDescription } from '@testing-library/jest-dom/matchers';
 
 export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSavedMovies, mainApi}) {
   const [width, setWidth] = useState(window.innerWidth);
@@ -51,13 +50,23 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
   function handleLikeClick(movieData) {
     console.log(movieData)
     mainApi.addMovie(movieData)
+      .then(() => {
+        // mainApi.getMovies()
+        // .then((res) => setSavedMoviesList(res))
+        getSavedMovies();
+      })
       .catch(err => console.log(err.message))
   }
 
   function handleDislikeClick(movieData) {
     mainApi.deleteMovie(movieData)
-      .then((res) => removeSavedMovie(res))
-      .then(() => setCardDeleted(!cardDeleted))
+      // .then((res) => removeSavedMovie(res))
+      // .then(() => setCardDeleted(!cardDeleted))
+      .then(() => {
+        // mainApi.getMovies()
+        // .then((res) => setSavedMoviesList(res))
+        getSavedMovies();
+      })
       .catch(err => console.log(err.message))
   }
 
@@ -80,6 +89,16 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSavedMovies, cardDeleted])
 
+  useEffect(() => {
+
+  })
+
+  function getSavedMovies() {
+    mainApi.getMovies()
+      .then((res) => setSavedMoviesList(res))
+      .catch((err) => console.log(err))
+  }
+
   function removeSavedMovie({_id}) {
     savedMoviesList.splice(savedMoviesList.findIndex((item) => item._id === _id), 1)
   }
@@ -90,7 +109,15 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
         <div className="card-list__container">{
           moviesData.map((movie, index) => {
             if (index < baseAmount)
-            return(<MoviesCard key={movie.id} movieData={movie} onLlikeClick={handleLikeClick} onDislikeClick={handleDislikeClick}/>)
+            return(
+              <MoviesCard
+                key={movie.movieId}
+                movieData={movie}
+                onLikeClick={handleLikeClick}
+                onDislikeClick={handleDislikeClick}
+                savedMovies={savedMoviesList}
+              />
+            )
             // eslint-disable-next-line array-callback-return
             return;
           })
@@ -110,7 +137,10 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
               movieData={movie}
               onLlikeClick={handleLikeClick}
               onDislikeClick={handleDislikeClick}
-              isSavedMovies={isSavedMovies}/>)
+              isSavedMovies={isSavedMovies}
+              savedMovies={savedMoviesList}
+            />
+          )
         })
       }</div> :
       <h2 className="card-list__not-found">Ничего не найдено</h2>

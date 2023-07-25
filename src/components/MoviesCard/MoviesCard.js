@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 
 import { useState } from 'react';
 
-export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isSavedMovies }) {
+export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isSavedMovies, savedMovies }) {
   // const { nameRU, duration, image, trailerLink } = movieData;
   const [liked, setLiked] = useState(checkWhichPage());
+  console.log(movieData)
 
   function minToHours(timeMin) {
     const hours = Math.floor(timeMin / 60);
@@ -36,7 +37,7 @@ export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isS
     <article className="card">
       <div>
       <Link to={movieData.trailerLink} className="card__image-container opacity" target="_blank">
-        <img src={moviesApiConfig.baseUrl+movieData.image.url} alt="Обложка" className="card__image" />
+        <img src={moviesApiConfig.baseUrl+movieData.image} alt="Обложка" className="card__image" />
       </Link>
       <div className="card__inner">
         <h3 className="card__name">{movieData.nameRU}</h3>
