@@ -20,7 +20,7 @@
   gap: 36px 20px;
 }
 
-.card-list__not-found {
+.card-list__error {
   margin: 50px 0 100px;
   text-align: center;
   width: 100%;

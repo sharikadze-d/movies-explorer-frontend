@@ -12,6 +12,7 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   const [lastSearch, setLastSearch] = useState({});
   const [lastSearchUpdated, setLastSearchUpdated] = useState(false);
   const [storageChecked, setStorageChecked] = useState(false);
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,14 +36,17 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
             movieId: id,
           }
         })
-        // result = {...result, image: image.url, thumbnail: image.thumbnail.url }
-        console.log(result)
         setLastSearch({ keyWord, checkboxStatus, result })
         setLastSearchUpdated(true);
+        setError(false);
       })
       .then(() => localStorage.setItem('lastSearch', JSON.stringify(lastSearch)))
       .then(() => setIsLoading(false))
       .then(() => navigate('/movies'))
+      .catch((err) => {
+        console.log(err);
+        setError(true);
+      })
   }
 
   function filterByKeyWord(arr, keyWord) {
@@ -72,11 +76,20 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   }, [lastSearchUpdated, storageChecked])
 
   return (
-    <main>
+    <main className="movies">
       <SearchForm onSearchClick={moviesSearch} lastSearch={lastSearch} />
       {
-      isLoading ? <Preloader isLoading={isLoading} /> :
-      <MoviesCardList isMoreButtonHidden={false} moviesData={lastSearch.result} isSavedMovies={isSavedMovies} mainApi={mainApi}/>
+        lastSearch && Object.keys(lastSearch).length ?
+        isLoading ? <Preloader isLoading={isLoading} /> :
+        <MoviesCardList
+          isMoreButtonHidden={false}
+          moviesData={lastSearch.result}
+          isSavedMovies={isSavedMovies}
+          mainApi={mainApi}
+          error={error}
+          setError={setError}
+        /> :
+        <div className="movies__spacer"></div>
       }
     </main>
   )

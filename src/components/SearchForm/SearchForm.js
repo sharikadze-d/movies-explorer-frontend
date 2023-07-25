@@ -29,9 +29,15 @@ export default function SearchForm({ onSearchClick, lastSearch }) {
 
   return (
     <section className="search">
-      <form className="search__form" name="search-form">
-        <input type="text" required placeholder={lastSearch.keyWord || "Фильм"} className="search__field" onChange={handleChangeInput}/>
-        <button type="submit" className="search__button opacity" onClick={handleSubmit} >Найти</button>
+      <form className="search__form" name="search-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder={lastSearch.keyWord || "Фильм"}
+          className="search__field"
+          onChange={handleChangeInput}
+          required
+        />
+        <button type="submit" className="search__button opacity" >Найти</button>
         <FilterCheckbox currentStatus={checkboxStatus} onChange={handleChangeCheckbox} />
       </form>
     </section>

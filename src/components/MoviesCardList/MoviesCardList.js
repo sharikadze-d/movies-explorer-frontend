@@ -5,13 +5,14 @@ import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { SCREEN_SIZE_BREAKPOINT_M, SCREEN_SIZE_BREAKPOINT_L } from '../../utils/constants'
 
-export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSavedMovies, mainApi}) {
+export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSavedMovies, mainApi, error, setError}) {
   const [width, setWidth] = useState(window.innerWidth);
   const [step, setStep] = useState(checkBaseStep());
   const [baseAmount, setBaseAmount] = useState(checkBaseAmount());
   const [buttonHidden, setButtonHidden] = useState(isMoreButtonHidden);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
   const [moviesList, setMoviesList] = useState(moviesData);
+  // const [error, setError] = useState(false);
 
   function handleResize() {
     setWidth(window.innerWidth);
@@ -60,7 +61,10 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
         setMoviesList(bufferArray);
         getSavedMovies();
       })
-      .catch(err => console.log(err.message))
+      .catch((err) => {
+        console.log(err);
+        setError(true);
+      })
   }
 
   function handleDislikeClick(movieData) {
@@ -68,7 +72,10 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
       .then(() => {
         getSavedMovies();
       })
-      .catch(err => console.log(err.message))
+      .catch((err) => {
+        console.log(err);
+        setError(true);
+      })
   }
 
   useEffect(() => { 
@@ -85,14 +92,20 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
         .then(res => {
           setSavedMoviesList(res)
         })
-        .catch((err) => setSavedMoviesList(err.message))
+        .catch((err) => {
+          console.log(err);
+          setError(true);
+        })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSavedMovies])
 
   function getSavedMovies() {
     mainApi.getMovies()
       .then((res) => setSavedMoviesList(res))
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err);
+        setError(true);
+      })
   }
 
   function checkLike(array, movie) {
@@ -119,7 +132,7 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
             return;
           })
         }</div> :
-        <h2 className="card-list__not-found">Ничего не найдено</h2>
+        <h2 className="card-list__error">Ничего не найдено</h2>
     )
   }
 
@@ -128,7 +141,6 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
       savedMoviesList && savedMoviesList.length ? 
       <div className="card-list__container">{
         savedMoviesList.map((movie, index) => {
-          // checkLike(savedMoviesList, movie);
           return(
             <MoviesCard
               key={index}
@@ -148,7 +160,9 @@ export default function MoviesCardList({ isMoreButtonHidden, moviesData, isSaved
 
   return (
     <section className="card-list">
-    {isSavedMovies ? savedMoviesMarkup() : moviesMarkup()}
+    {error ? 
+      <h2 className="card-list__error">Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз</h2> :
+      (isSavedMovies ? savedMoviesMarkup() : moviesMarkup())}
       <button
         type="button"
         className={`card-list__more-btn ${buttonHidden ? 'card-list__more-btn_hidden' : ''} opacity`}
