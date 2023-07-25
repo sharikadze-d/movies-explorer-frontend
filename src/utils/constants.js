@@ -17,7 +17,8 @@ const loginContent = {
 }
 
 const mainApiConfig = {
-  baseUrl: 'http://localhost:3000',
+  // baseUrl: 'http://localhost:3000',
+  baseUrl: 'https://api.movies.dsharikadze.nomoredomains.rocks',
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
