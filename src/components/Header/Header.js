@@ -27,7 +27,7 @@ export default function Header({ isLoggedIn, onBurgerClick, isMainPage }) {
   )
 
   return (
-    <header className={isLoggedIn && isMainPage ? 'header header_color_grey' : 'header'}>
+    <header className={isLoggedIn && !isMainPage ? 'header header_color_grey' : 'header'}>
       <div className='header__wrapper'>
         <Logo />
         {isLoggedIn ? buttonsAuthorized : buttonsUnauthorized}

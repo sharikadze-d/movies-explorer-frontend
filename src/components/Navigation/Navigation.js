@@ -3,7 +3,7 @@ import account from '../../images/header-account.svg';
 
 import { Link } from 'react-router-dom';
 
-export default function Navigation({ isOpened, onCloseClick, movies, savedMovies, profile }) {
+export default function Navigation({ isOpened, onCloseClick, movies, savedMovies, profile, main }) {
   return (
     <div className={`burger ${isOpened ? 'burger_opened' : ''}`}>
       <nav className="burger__container">
@@ -11,7 +11,7 @@ export default function Navigation({ isOpened, onCloseClick, movies, savedMovies
         <ul className="burger__link-list">
           <div className="burger__inner">
             <li className="burger__list-item">
-              <Link to="/" className="burger__link" onClick={onCloseClick}>Главная</Link>
+              <Link to="/" className={`burger__link ${main ? 'burger__link_active' : ''}`} onClick={onCloseClick}>Главная</Link>
             </li>
             <li className="burger__list-item">
               <Link to="/movies" className={`burger__link ${movies ? 'burger__link_active' : ''}`} onClick={onCloseClick}>Фильмы</Link>
