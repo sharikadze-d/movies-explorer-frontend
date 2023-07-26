@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isSavedMovies, isLiked }) {
   const [liked, setLiked] = useState(isLiked);
+  const [id, setId] = useState(movieData._id || 0);
 
   function minToHours(timeMin) {
     const hours = Math.floor(timeMin / 60);
@@ -18,12 +19,16 @@ export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isS
   }
 
   function handleLikeClick () {
-    onLikeClick(movieData);
+    let data = movieData;
+    delete data._id;
+    delete data.owner;
+    onLikeClick(data);
     setLiked(true);
   }
 
   function handleDislikeClick () {
-    onDislikeClick(movieData);
+    const cardId = id || movieData._id
+    onDislikeClick({ _id: cardId});
     setLiked(false);
   }
 
