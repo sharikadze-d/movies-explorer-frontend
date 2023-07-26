@@ -126,7 +126,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <Header isLoggedIn={false}/>
+            <Header isLoggedIn={isLoggedIn}/>
             <Main />
             <Footer />
           </>
@@ -138,6 +138,7 @@ function App() {
               element={Header}
               isLoggedIn={isLoggedIn}
               onBurgerClick={handleBurgerClick}
+              isMainPage={true}
             />
             <ProtectedRoute 
               element={Navigation}

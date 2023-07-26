@@ -5,7 +5,7 @@ import account from '../../images/header-account.svg';
 import Logo from '../Logo/Logo';
 import { Link } from 'react-router-dom';
 
-export default function Header({ isLoggedIn, onBurgerClick }) {
+export default function Header({ isLoggedIn, onBurgerClick, isMainPage }) {
   const headerLinkClassName = `header__link ${isLoggedIn ? 'header__link_hidden' : ''}`
 
   const buttonsAuthorized = (
@@ -27,7 +27,7 @@ export default function Header({ isLoggedIn, onBurgerClick }) {
   )
 
   return (
-    <header className={isLoggedIn ? 'header header_color_grey' : 'header'}>
+    <header className={isLoggedIn && isMainPage ? 'header header_color_grey' : 'header'}>
       <div className='header__wrapper'>
         <Logo />
         {isLoggedIn ? buttonsAuthorized : buttonsUnauthorized}
