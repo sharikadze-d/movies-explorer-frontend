@@ -109,7 +109,10 @@ export default function MoviesCardList({
 
   function getSavedMovies() {
     mainApi.getMovies()
-      .then((res) => setSavedMoviesList(res))
+      .then((res) => {
+        setSavedMoviesList(res)
+        localStorage.setItem('savedMovies', JSON.stringify(res))
+      })
       .catch((err) => {
         console.log(err);
         setError(true);

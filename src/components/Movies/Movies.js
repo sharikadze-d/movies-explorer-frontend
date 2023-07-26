@@ -68,9 +68,16 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
     }
   }
 
+  function checkSavedMovies() {
+    if (localStorage.getItem('savedMovies')) {
+      setSavedMoviesList(JSON.parse(localStorage.getItem('savedMovies')))
+    }
+  }
+
   useEffect(() => {
     if (!storageChecked) {
       checkLastSearch();
+      checkSavedMovies();
       setStorageChecked(true);
     } 
     if (lastSearchUpdated) {
