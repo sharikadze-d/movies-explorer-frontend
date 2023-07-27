@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
-export default function SearchForm({ onSearchClick, lastSearch }) {
+export default function SearchForm({ onSearchClick, lastSearch, isSavedMovies }) {
   const [fieldValue, setFieldValue] = useState('');
   const [checkboxStatus, setCheckboxStatus] = useState(false);
 
@@ -35,7 +35,7 @@ export default function SearchForm({ onSearchClick, lastSearch }) {
           placeholder={lastSearch.keyWord || "Фильм"}
           className="search__field"
           onChange={handleChangeInput}
-          required
+          required={isSavedMovies ? false : true}
         />
         <button type="submit" className="search__button opacity" >Найти</button>
         <FilterCheckbox currentStatus={checkboxStatus} onChange={handleChangeCheckbox} />

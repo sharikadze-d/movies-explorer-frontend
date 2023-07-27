@@ -72,7 +72,9 @@ export default class MainApi {
 
   getMovies () {
     return fetch(`${this._url}/movies`, {
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`},
       method: 'GET',
     })
     .then(handleResponse)

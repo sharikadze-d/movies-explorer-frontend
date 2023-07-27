@@ -103,8 +103,7 @@ function App() {
 
   function handleLogOut () {
     setIsLoggedIn(false);
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('lastSearch');
+    localStorage.clear();
     navigate('/');
   }
 

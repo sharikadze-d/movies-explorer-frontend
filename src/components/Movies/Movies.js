@@ -9,6 +9,7 @@ import Preloader from '../Preloader/Preloader';
 export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastSearch, setLastSearch] = useState({});
+  const [lastSearchSaved, setLastSearchSaved] = useState({});
   const [lastSearchUpdated, setLastSearchUpdated] = useState(false);
   const [storageChecked, setStorageChecked] = useState(false);
   const [error, setError] = useState(false);
@@ -39,6 +40,10 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
         setLastSearchUpdated(true);
         setError(false);
       })
+      .then(() => {
+        mainApi.getMovies()
+          .then((res) => setSavedMoviesList(res))
+      })
       .then(() => localStorage.setItem('lastSearch', JSON.stringify(lastSearch)))
       .then(() => setIsLoading(false))
       .catch((err) => {
@@ -51,6 +56,9 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
     let result = filterByKeyWord(savedMoviesList, keyword);
     result = filterByDuration(result, checkboxStatus);
     setSavedMoviesListFiltred(result);
+    setLastSearchSaved({ keyword, checkboxStatus, result });
+    // localStorage.setItem('savedMoviesFiltred', JSON.stringify(result));
+    // localStorage.setItem('lastSearchSaved', JSON.stringify({ keyword, checkboxStatus, result }));
   }
 
   function filterByKeyWord(arr, keyWord) {
@@ -74,21 +82,39 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
     }
   }
 
+  // function checkSavedMoviesFiltred() {
+  //   if (localStorage.getItem('savedMoviesFiltred')) {
+  //     setSavedMoviesListFiltred(JSON.parse(localStorage.getItem('savedMoviesFiltred')))
+  //   }
+  // }
+
+  function checkLastSearchSaved() {
+    if (localStorage.getItem('lastSearchSaved')) {
+      setSavedMoviesListFiltred(JSON.parse(localStorage.getItem('lastSearchSaved')))
+    }
+  }
+
   useEffect(() => {
     if (!storageChecked) {
       checkLastSearch();
-      checkSavedMovies();
+      checkLastSearchSaved();
+      checkSavedMovies()
+      // checkSavedMoviesFiltred();
       setStorageChecked(true);
     } 
     if (lastSearchUpdated) {
       localStorage.setItem('lastSearch', JSON.stringify(lastSearch))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastSearchUpdated, storageChecked])
+  }, [lastSearchUpdated, storageChecked, isSavedMovies, isLoading])
 
   return (
     <main className="movies">
-      <SearchForm onSearchClick={isSavedMovies ? savedMoviesSearch : moviesSearch} lastSearch={lastSearch} />
+      <SearchForm
+        onSearchClick={isSavedMovies ? savedMoviesSearch : moviesSearch}
+        lastSearch={isSavedMovies ? lastSearchSaved : lastSearch}
+        isSavedMovies={isSavedMovies}
+      />
       {
         lastSearch && Object.keys(lastSearch).length ?
         isLoading ? <Preloader isLoading={isLoading} /> :
@@ -102,6 +128,7 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
           savedMoviesList={savedMoviesList}
           setSavedMoviesList={setSavedMoviesList}
           savedMoviesListFiltred={savedMoviesListFiltred}
+          setSavedMoviesListFiltred={setSavedMoviesListFiltred}
         /> :
         <div className="movies__spacer"></div>
       }

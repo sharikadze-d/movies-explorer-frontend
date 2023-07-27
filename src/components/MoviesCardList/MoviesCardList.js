@@ -14,7 +14,8 @@ export default function MoviesCardList({
   setError,
   savedMoviesList,
   setSavedMoviesList,
-  savedMoviesListFiltred}) {
+  savedMoviesListFiltred,
+  setSavedMoviesListFiltred}) {
 
   const [width, setWidth] = useState(window.innerWidth);
   const [step, setStep] = useState(checkBaseStep());
@@ -79,11 +80,20 @@ export default function MoviesCardList({
     mainApi.deleteMovie(movieData)
       .then(() => {
         getSavedMovies();
+        deleteSavedMovieFromFiltredList(movieData)
       })
       .catch((err) => {
         console.log(err);
         setError(true);
       })
+  }
+
+  function deleteSavedMovieFromFiltredList(movieData) {
+    let updatedList = savedMoviesListFiltred;
+    const index = updatedList.find(item => item.movieId === movieData.movieId)
+    updatedList.splice(index, 1);
+    setSavedMoviesListFiltred(updatedList)
+    localStorage.setItem('savedMoviesListFiltred', JSON.stringify(updatedList));
   }
 
   useEffect(() => { 
@@ -105,7 +115,7 @@ export default function MoviesCardList({
           setError(true);
         })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSavedMovies])
+  }, [isSavedMovies, moviesData])
 
   function getSavedMovies() {
     mainApi.getMovies()
@@ -120,6 +130,7 @@ export default function MoviesCardList({
   }
 
   function checkLike(array, movie) {
+    console.log(array)
     return array.some((item) => item.movieId === movie.movieId)
   }
 
@@ -149,9 +160,9 @@ export default function MoviesCardList({
 
   const savedMoviesMarkup = () => {
     return (
-      savedMoviesList && savedMoviesList.length ? 
+      savedMoviesListFiltred && savedMoviesListFiltred.length ? 
       <div className="card-list__container">{
-        ((savedMoviesListFiltred && savedMoviesListFiltred.length) ? savedMoviesListFiltred : savedMoviesList).map((movie, index) => {
+        savedMoviesListFiltred.map((movie, index) => {
           return(
             <MoviesCard
               key={movie.movieId}
