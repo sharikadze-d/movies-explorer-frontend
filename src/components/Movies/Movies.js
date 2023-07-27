@@ -70,8 +70,8 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   }
 
   function filterByDuration(arr, isIncludesShorts) {
-    if (isIncludesShorts) return arr
-      else return arr.filter(item => item.duration > 40)
+    if (!isIncludesShorts) return arr
+      else return arr.filter(item => item.duration < 40)
   }
 
   function checkLastSearch() {

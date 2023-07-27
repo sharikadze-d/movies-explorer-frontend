@@ -131,7 +131,6 @@ export default function MoviesCardList({
   }
 
   function checkLike(array, movie) {
-    console.log(array)
     return array.some((item) => item.movieId === movie.movieId)
   }
 
