@@ -43,7 +43,9 @@ export default class MainApi {
 
   updateUserData ({ name, email }) {
     return fetch(`${this._url}/users/me`, {
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`},
       method: 'PATCH',
       body: JSON.stringify({
         name: name,
@@ -55,7 +57,9 @@ export default class MainApi {
 
   addMovie (movieData) {
     return fetch(`${this._url}/movies`, {
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`},
       method: 'POST',
       body: JSON.stringify(movieData)
     })
@@ -64,7 +68,9 @@ export default class MainApi {
 
   deleteMovie ({_id}) {
     return fetch(`${this._url}/movies/${_id}`, {
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`},
       method: 'DELETE',
     })
     .then(handleResponse)

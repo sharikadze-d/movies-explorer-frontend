@@ -14,7 +14,9 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   const [storageChecked, setStorageChecked] = useState(false);
   const [error, setError] = useState(false);
   const [savedMoviesList, setSavedMoviesList] = useState([]);
+  const [savedMoviesChecked, setSavedMoviesChecked] = useState(false);
   const [savedMoviesListFiltred, setSavedMoviesListFiltred] = useState([]);
+  const [savedMoviesSearchDone, setSavedMoviesSearchDone] = useState(false);
 
   function moviesSearch(keyWord, checkboxStatus) {
     let result = [];
@@ -53,12 +55,14 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   }
 
   function savedMoviesSearch(keyword, checkboxStatus) {
+    setSavedMoviesSearchDone(true);
     let result = filterByKeyWord(savedMoviesList, keyword);
     result = filterByDuration(result, checkboxStatus);
     setSavedMoviesListFiltred(result);
     setLastSearchSaved({ keyword, checkboxStatus, result });
-    // localStorage.setItem('savedMoviesFiltred', JSON.stringify(result));
-    // localStorage.setItem('lastSearchSaved', JSON.stringify({ keyword, checkboxStatus, result }));
+    console.log(1, result)
+    localStorage.setItem('savedMoviesFiltred', JSON.stringify(result));
+    localStorage.setItem('lastSearchSaved', JSON.stringify({ keyword, checkboxStatus, result }));
   }
 
   function filterByKeyWord(arr, keyWord) {
@@ -82,11 +86,11 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
     }
   }
 
-  // function checkSavedMoviesFiltred() {
-  //   if (localStorage.getItem('savedMoviesFiltred')) {
-  //     setSavedMoviesListFiltred(JSON.parse(localStorage.getItem('savedMoviesFiltred')))
-  //   }
-  // }
+  function checkSavedMoviesFiltred() {
+    if (localStorage.getItem('savedMoviesFiltred')) {
+      setSavedMoviesListFiltred(JSON.parse(localStorage.getItem('savedMoviesFiltred')))
+    }
+  }
 
   function checkLastSearchSaved() {
     if (localStorage.getItem('lastSearchSaved')) {
@@ -99,7 +103,7 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
       checkLastSearch();
       checkLastSearchSaved();
       checkSavedMovies()
-      // checkSavedMoviesFiltred();
+      checkSavedMoviesFiltred();
       setStorageChecked(true);
     } 
     if (lastSearchUpdated) {
@@ -107,6 +111,33 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSearchUpdated, storageChecked, isSavedMovies, isLoading])
+
+  useEffect(() => {
+    if (!savedMoviesChecked)
+    mainApi.getMovies()
+    .then((res) => setSavedMoviesList(res))
+    .then(() => setSavedMoviesChecked(true))
+    .catch((err) => {
+      console.log(err);
+      setError(true);
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedMoviesChecked])
+
+  // async function getSavedMoviesList() {
+  //   let response;
+  //   await mainApi.getMovies()
+  //   .then(res => response = res)
+  //   .catch((err) => {
+  //     console.log(err);
+  //     setError(true)
+  //     return [];
+  //   })
+
+  //   return await response;
+  // }
+
+  // console.log(getSavedMoviesList())
 
   return (
     <main className="movies">
@@ -116,7 +147,7 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
         isSavedMovies={isSavedMovies}
       />
       {
-        lastSearch && Object.keys(lastSearch).length ?
+        (lastSearch && Object.keys(lastSearch).length) || isSavedMovies ?
         isLoading ? <Preloader isLoading={isLoading} /> :
         <MoviesCardList
           isMoreButtonHidden={false}
@@ -129,6 +160,7 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
           setSavedMoviesList={setSavedMoviesList}
           savedMoviesListFiltred={savedMoviesListFiltred}
           setSavedMoviesListFiltred={setSavedMoviesListFiltred}
+          savedMoviesSearchDone={savedMoviesSearchDone}
         /> :
         <div className="movies__spacer"></div>
       }

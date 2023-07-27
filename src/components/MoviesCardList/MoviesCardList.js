@@ -15,7 +15,8 @@ export default function MoviesCardList({
   savedMoviesList,
   setSavedMoviesList,
   savedMoviesListFiltred,
-  setSavedMoviesListFiltred}) {
+  setSavedMoviesListFiltred,
+  savedMoviesSearchDone}) {
 
   const [width, setWidth] = useState(window.innerWidth);
   const [step, setStep] = useState(checkBaseStep());
@@ -62,7 +63,7 @@ export default function MoviesCardList({
     delete movieData.__v
     mainApi.addMovie(movieData)
       .then((res) => {
-        let bufferArray = moviesList;
+        let bufferArray = moviesList;  // || []
         bufferArray = bufferArray.map(item => {
           if (item.movieId === res.movieId) return res
             else return item;
@@ -80,7 +81,7 @@ export default function MoviesCardList({
     mainApi.deleteMovie(movieData)
       .then(() => {
         getSavedMovies();
-        deleteSavedMovieFromFiltredList(movieData)
+        savedMoviesListFiltred.length && deleteSavedMovieFromFiltredList(movieData)
       })
       .catch((err) => {
         console.log(err);
@@ -158,11 +159,50 @@ export default function MoviesCardList({
     )
   }
 
+  // const savedMoviesMarkup = () => {
+  //   // console.log(savedMoviesListFiltred);
+  //   return (
+  //     savedMoviesList.length || savedMoviesListFiltred.length ? 
+  //     <div className="card-list__container">{
+  //       ((savedMoviesSearchDone && savedMoviesListFiltred.length) ? savedMoviesListFiltred : savedMoviesList).map((movie, index) => {
+  //       // savedMoviesListFiltred.map((movie, index) => {
+  //         return(
+  //           <MoviesCard
+  //             key={movie.movieId}
+  //             movieData={movie}
+  //             onLlikeClick={handleLikeClick}
+  //             onDislikeClick={handleDislikeClick}
+  //             isSavedMovies={isSavedMovies}
+  //             savedMovies={savedMoviesList}
+  //             isLiked={checkLike(savedMoviesList, movie)}
+  //           />
+  //         )
+  //       })
+  //     }</div> : 
+  //     <h2 className="card-list__error">Ничего не найдено</h2>
+  //   )
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
   const savedMoviesMarkup = () => {
+    // console.log(savedMoviesListFiltred);
     return (
-      savedMoviesListFiltred && savedMoviesListFiltred.length ? 
+      (!savedMoviesList.length || (savedMoviesSearchDone && !savedMoviesListFiltred.length)) ? 
+      <h2 className="card-list__error">Ничего не найдено</h2> : 
       <div className="card-list__container">{
-        savedMoviesListFiltred.map((movie, index) => {
+        ((savedMoviesSearchDone && savedMoviesListFiltred.length) ? savedMoviesListFiltred : savedMoviesList).map((movie, index) => {
+        // savedMoviesListFiltred.map((movie, index) => {
           return(
             <MoviesCard
               key={movie.movieId}
@@ -175,10 +215,28 @@ export default function MoviesCardList({
             />
           )
         })
-      }</div> :
-      <h2 className="card-list__error">Ничего не найдено</h2>
+      }</div>
+      
     )
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <section className="card-list">

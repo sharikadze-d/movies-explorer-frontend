@@ -105,6 +105,7 @@ function App() {
     setIsLoggedIn(false);
     localStorage.clear();
     navigate('/');
+    window.location.reload();
   }
 
   useEffect(() => {
