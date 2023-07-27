@@ -16,8 +16,8 @@ import {
 export default function Profile({ onSubmit, errMessage, onLogout }) {
   const nameSaved = useContext(CurrentUserContext).name;
   const emailSaved = useContext(CurrentUserContext).email;
-  const [name, setName] = useState(useContext(CurrentUserContext).name);
-  const [email, setEmail] = useState(useContext(CurrentUserContext).email);
+  const [nameCurrent, setNameCurrent] = useState(useContext(CurrentUserContext).name);
+  const [emailCurrent, setEmailCurrent] = useState(useContext(CurrentUserContext).email);
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -30,11 +30,11 @@ export default function Profile({ onSubmit, errMessage, onLogout }) {
   }
 
   function handleChangeName(evt) {
-    setName(evt.target.value);
+    setNameCurrent(evt.target.value);
   } 
 
   function handleChangeEmail(evt) {
-    setEmail(evt.target.value);
+    setEmailCurrent(evt.target.value);
   } 
 
   function handleChange(evt) {
@@ -54,6 +54,14 @@ export default function Profile({ onSubmit, errMessage, onLogout }) {
 
     setIsValid(target.closest("form").checkValidity());
   }
+
+  useEffect(() => {
+    if (nameCurrent === nameSaved && emailCurrent === emailSaved) setIsValid(false);
+    if (nameCurrent === nameSaved && emailCurrent === '') setIsValid(false);
+    if (nameCurrent === '' && emailCurrent === emailSaved) setIsValid(false);
+    if (nameCurrent === '' && emailCurrent === '') setIsValid(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameCurrent, emailCurrent])
   
   useEffect(() => {
     setButtonState(isValid);
@@ -68,7 +76,7 @@ export default function Profile({ onSubmit, errMessage, onLogout }) {
             className="profile__input"
             id="name"
             name="name"
-            value={name}
+            value={nameCurrent}
             onChange={handleChangeName}
             minLength="2"
             maxLength="30"
@@ -82,7 +90,7 @@ export default function Profile({ onSubmit, errMessage, onLogout }) {
           <input
             className="profile__input"
             id="email"
-            value={email}
+            value={emailCurrent}
             onChange={handleChangeEmail}
             type="email"
             name="email"
