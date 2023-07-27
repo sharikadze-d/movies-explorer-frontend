@@ -147,11 +147,13 @@ function App() {
           <>
             <ProtectedRoute 
               element={Header}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               onBurgerClick={handleBurgerClick}
             />
             <ProtectedRoute 
               element={Navigation}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
@@ -159,6 +161,7 @@ function App() {
             />
             <ProtectedRoute 
               element={Movies}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               moviesApi={moviesApi}
               mainApi={mainApi}
@@ -166,6 +169,7 @@ function App() {
             />
             <ProtectedRoute 
               element={Footer}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
             />
           </> :
@@ -176,11 +180,13 @@ function App() {
           <>
             <ProtectedRoute 
               element={Header}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               onBurgerClick={handleBurgerClick}
             />
             <ProtectedRoute 
               element={Navigation}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
@@ -188,6 +194,7 @@ function App() {
             />
             <ProtectedRoute 
               element={Movies}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               moviesApi={moviesApi}
               mainApi={mainApi}
@@ -196,6 +203,7 @@ function App() {
             />
             <ProtectedRoute 
               element={Footer}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
             />
           </> :
@@ -207,11 +215,13 @@ function App() {
           <>
             <ProtectedRoute 
               element={Header}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               onBurgerClick={handleBurgerClick}
             />
             <ProtectedRoute 
               element={Navigation}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               isOpened={isBurgerOpened}
               onCloseClick={closeBurgerMenu}
@@ -219,6 +229,7 @@ function App() {
             />
             <ProtectedRoute 
               element={Profile}
+              isAuthPage={false}
               isLoggedIn={isLoggedIn}
               onSubmit={handleUpdateProfile}
               errMessage={errMessage}
@@ -229,11 +240,23 @@ function App() {
         }/>
 
         <Route path="/signup" element={
-          <Register onSubmit={handleRegister} errMessage={errMessage}/>
+          <ProtectedRoute 
+            element={Register}
+            isAuthPage={true}
+            isLoggedIn={isLoggedIn}
+            onSubmit={handleRegister}
+            errMessage={errMessage}
+          />
         }/>
 
         <Route path="/signin" element={
-          <Login errMessage={errMessage} onSubmit={handleLogin}/>
+          <ProtectedRoute 
+            element={Login}
+            isAuthPage={true}
+            isLoggedIn={isLoggedIn}
+            onSubmit={handleLogin}
+            errMessage={errMessage}
+          />
         }/>
 
         <Route path="*" element={<NotFound />}/>
