@@ -14,7 +14,10 @@ import {
 } from '../../utils/constants';
 
 export default function Profile({ onSubmit, errMessage, onLogout }) {
-  const { name, email } = useContext(CurrentUserContext);
+  const nameSaved = useContext(CurrentUserContext).name;
+  const emailSaved = useContext(CurrentUserContext).email;
+  const [name, setName] = useState(useContext(CurrentUserContext).name);
+  const [email, setEmail] = useState(useContext(CurrentUserContext).email);
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -25,6 +28,14 @@ export default function Profile({ onSubmit, errMessage, onLogout }) {
     const { name, email, password } = values;
     onSubmit({ name, email, password })
   }
+
+  function handleChangeName(evt) {
+    setName(evt.target.value);
+  } 
+
+  function handleChangeEmail(evt) {
+    setEmail(evt.target.value);
+  } 
 
   function handleChange(evt) {
     const target = evt.target;
@@ -50,14 +61,15 @@ export default function Profile({ onSubmit, errMessage, onLogout }) {
   return (
     <main className="profile">
       <form className="profile__content" onSubmit={handleSubmit} onChange={handleChange}>
-        <h2 className="profile__title">{`Привет, ${name}!`}</h2>
+        <h2 className="profile__title">{`Привет, ${nameSaved}!`}</h2>
         <div className="profile__item">
           <label className="profile__label">Имя</label>
           <input
             className="profile__input"
             id="name"
             name="name"
-            placeholder={name}
+            value={name}
+            onChange={handleChangeName}
             minLength="2"
             maxLength="30"
             pattern={USERNAME_PATTERN}
@@ -70,7 +82,8 @@ export default function Profile({ onSubmit, errMessage, onLogout }) {
           <input
             className="profile__input"
             id="email"
-            placeholder={email}
+            value={email}
+            onChange={handleChangeEmail}
             type="email"
             name="email"
             pattern={EMAIL_PATTERN}
