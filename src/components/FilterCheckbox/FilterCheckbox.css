@@ -7,12 +7,14 @@
 .filter-checkbox__fake-checkbox {
   margin-left: 14px;
   background: url('../../images/checkbox-off.svg');
+  transform: rotate(180deg);
   width: 36px;
   height: 20px;
 }
 
 .filter-checkbox__input:checked + .filter-checkbox__fake-checkbox {
   background: url('../../images/checkbox-on.svg');
+  transform: rotate(180deg);
   width: 36px;
   height: 20px;
 }
