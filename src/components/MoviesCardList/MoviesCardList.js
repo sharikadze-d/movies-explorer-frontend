@@ -3,7 +3,15 @@ import '../Opacity/Opacity.css'
 
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { SCREEN_SIZE_BREAKPOINT_M, SCREEN_SIZE_BREAKPOINT_L } from '../../utils/constants'
+import {
+  SCREEN_SIZE_BREAKPOINT_M,
+  SCREEN_SIZE_BREAKPOINT_L,
+  BASE_CARDS_AMOUNT_S,
+  BASE_CARDS_AMOUNT_M,
+  BASE_CARDS_AMOUNT_L,
+  CARDS_ADD_STEP_S,
+  CARDS_ADD_STEP_ML,
+} from '../../utils/constants'
 
 export default function MoviesCardList({
   isMoreButtonHidden,
@@ -31,8 +39,8 @@ export default function MoviesCardList({
   }
 
   function checkBaseStep() {
-    if (width <= SCREEN_SIZE_BREAKPOINT_M) return 2
-      return 4;
+    if (width <= SCREEN_SIZE_BREAKPOINT_M) return CARDS_ADD_STEP_S
+      return CARDS_ADD_STEP_ML;
   }
 
   useEffect(() => {
@@ -44,9 +52,9 @@ export default function MoviesCardList({
   }, [width]);
 
   function checkBaseAmount() {
-    if (width > SCREEN_SIZE_BREAKPOINT_L) return 12
-      else if (width > SCREEN_SIZE_BREAKPOINT_M) return 8
-        else return 5;
+    if (width > SCREEN_SIZE_BREAKPOINT_L) return BASE_CARDS_AMOUNT_L
+      else if (width > SCREEN_SIZE_BREAKPOINT_M) return BASE_CARDS_AMOUNT_M
+        else return BASE_CARDS_AMOUNT_S;
   }
 
   function addCards() {
@@ -63,7 +71,7 @@ export default function MoviesCardList({
     delete movieData.__v
     mainApi.addMovie(movieData)
       .then((res) => {
-        let bufferArray = moviesList;  // || []
+        let bufferArray = moviesList;
         bufferArray = bufferArray.map(item => {
           if (item.movieId === res.movieId) return res
             else return item;
@@ -158,50 +166,12 @@ export default function MoviesCardList({
     )
   }
 
-  // const savedMoviesMarkup = () => {
-  //   // console.log(savedMoviesListFiltred);
-  //   return (
-  //     savedMoviesList.length || savedMoviesListFiltred.length ? 
-  //     <div className="card-list__container">{
-  //       ((savedMoviesSearchDone && savedMoviesListFiltred.length) ? savedMoviesListFiltred : savedMoviesList).map((movie, index) => {
-  //       // savedMoviesListFiltred.map((movie, index) => {
-  //         return(
-  //           <MoviesCard
-  //             key={movie.movieId}
-  //             movieData={movie}
-  //             onLlikeClick={handleLikeClick}
-  //             onDislikeClick={handleDislikeClick}
-  //             isSavedMovies={isSavedMovies}
-  //             savedMovies={savedMoviesList}
-  //             isLiked={checkLike(savedMoviesList, movie)}
-  //           />
-  //         )
-  //       })
-  //     }</div> : 
-  //     <h2 className="card-list__error">Ничего не найдено</h2>
-  //   )
-  // }
-
-
-
-
-
-
-
-
-
-
-
-
-
   const savedMoviesMarkup = () => {
-    // console.log(savedMoviesListFiltred);
     return (
       (!savedMoviesList.length || (savedMoviesSearchDone && !savedMoviesListFiltred.length)) ? 
       <h2 className="card-list__error">Ничего не найдено</h2> : 
       <div className="card-list__container">{
         ((savedMoviesSearchDone && savedMoviesListFiltred.length) ? savedMoviesListFiltred : savedMoviesList).map((movie, index) => {
-        // savedMoviesListFiltred.map((movie, index) => {
           return(
             <MoviesCard
               key={movie.movieId}
@@ -218,24 +188,6 @@ export default function MoviesCardList({
       
     )
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   return (
     <section className="card-list">

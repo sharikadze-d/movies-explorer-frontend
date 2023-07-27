@@ -6,6 +6,8 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 import Preloader from '../Preloader/Preloader';
 
+import { SHORTCUT_DURATION } from '../../utils/constants'
+
 export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastSearch, setLastSearch] = useState({});
@@ -71,7 +73,7 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
 
   function filterByDuration(arr, isIncludesShorts) {
     if (!isIncludesShorts) return arr
-      else return arr.filter(item => item.duration < 40)
+      else return arr.filter(item => item.duration < SHORTCUT_DURATION)
   }
 
   function checkLastSearch() {
@@ -123,21 +125,6 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedMoviesChecked])
-
-  // async function getSavedMoviesList() {
-  //   let response;
-  //   await mainApi.getMovies()
-  //   .then(res => response = res)
-  //   .catch((err) => {
-  //     console.log(err);
-  //     setError(true)
-  //     return [];
-  //   })
-
-  //   return await response;
-  // }
-
-  // console.log(getSavedMoviesList())
 
   return (
     <main className="movies">
