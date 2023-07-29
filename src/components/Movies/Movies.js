@@ -56,15 +56,14 @@ export default function Movies({ moviesApi, isSavedMovies, mainApi }) {
       })
   }
 
-  function savedMoviesSearch(keyword, checkboxStatus) {
+  function savedMoviesSearch(keyWord, checkboxStatus) {
     setSavedMoviesSearchDone(true);
-    let result = filterByKeyWord(savedMoviesList, keyword);
+    let result = filterByKeyWord(savedMoviesList, keyWord);
     result = filterByDuration(result, checkboxStatus);
     setSavedMoviesListFiltred(result);
-    setLastSearchSaved({ keyword, checkboxStatus, result });
-    console.log(1, result)
+    setLastSearchSaved({ keyWord, checkboxStatus, result });
     localStorage.setItem('savedMoviesFiltred', JSON.stringify(result));
-    localStorage.setItem('lastSearchSaved', JSON.stringify({ keyword, checkboxStatus, result }));
+    localStorage.setItem('lastSearchSaved', JSON.stringify({ keyWord, checkboxStatus, result }));
   }
 
   function filterByKeyWord(arr, keyWord) {

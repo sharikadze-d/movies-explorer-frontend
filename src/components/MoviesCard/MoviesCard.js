@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 export default function MoviesCard({ movieData, onLikeClick, onDislikeClick, isSavedMovies, savedMovies, isLiked, _id }) {
   const [liked, setLiked] = useState(isLiked);
+  // eslint-disable-next-line no-unused-vars
   const [id, setId] = useState(getId(movieData));
 
   function minToHours(timeMin) {
