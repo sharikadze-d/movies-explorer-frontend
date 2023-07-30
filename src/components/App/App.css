@@ -4,4 +4,10 @@
   font-family: Inter, Arial, sans-serif;
   color: white;
   margin: 0 auto;
+  position: relative;
+}
+
+.app_preloader {
+  width: 100vw;
+  height: 100vh;
 }
